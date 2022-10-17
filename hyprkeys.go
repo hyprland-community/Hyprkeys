@@ -13,7 +13,7 @@ import (
 // We want to return the keys like this:
 // Keybind = | <kbd>SUPER + L</kbd> | firefox | , firefox
 // and put them in a markdown table
-func readHyprlandConfig() []string {
+func readHyprlandConfig() ([]string, []string) {
 	// If --test is passed as an argument, read the test file
 	//file, err := os.Open(os.Getenv("HOME") + "/.config/hypr/hyprland.conf")
 	file, err := os.Open("test/hyprland.conf") // testing config
@@ -38,8 +38,7 @@ func readHyprlandConfig() []string {
 	if err := scanner.Err(); err != nil {
 		panic(err)
 	}
-	return kbKeybinds
-	return mKeybinds
+	return kbKeybinds, mKeybinds
 }
 
 // Return each keybind as a markdown table row
@@ -72,8 +71,7 @@ func keybindsToMarkdown(kbKeybinds, mKeybinds []string) []string {
 }
 
 func main() {
-	kbKeybinds := readHyprlandConfig()
-	mKeybinds := readHyprlandConfig()
+	kbKeybinds, mKeybinds := readHyprlandConfig()
 	// If --verbose is passed as an argument, print the keybinds
 	// to the terminal
 	if len(os.Args) > 1 && os.Args[1] == "--verbose" {
@@ -89,8 +87,8 @@ func main() {
 	// as a markdown table
 	if len(os.Args) > 1 && os.Args[1] == "--markdown" {
 		markdown := keybindsToMarkdown(kbKeybinds, mKeybinds)
-		println("| Keybind | Dispatcher | Description |")
-		println("|---------|---------|-------------|")
+		println("| Keybind | Dispatcher | Command |")
+		println("|---------|------------|---------|")
 		for _, row := range markdown {
 			println(row)
 		}
