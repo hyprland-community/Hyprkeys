@@ -23,7 +23,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Contributing
 If you want to contribute, feel free to open a pull request. I'll try to review it as soon as possible.
 
-## Example Output (as of 2021-10-17)
+## Example Output (as of 2022-10-17)
 
 | Mod | Key | Dispatcher | Command |
 | --- | --- | --- | --- |
