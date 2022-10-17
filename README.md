@@ -14,8 +14,10 @@ In case you want to use it, instructions are below:
 Alternatively, open this directory and run `go run .` to run without compiling.
 
 ## TODO
-- [ ] Format keybinds better, maybe with a proper table
-- [ ] Add a way to change keybinds with Hyprkeys after reading them
+- [x] Format keybinds better, maybe with a proper table
+  - [ ]  Remove the `+` in the keybinds that don't have modifiers
+- [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
+- [ ] Packaging for AUR and maybe other distros
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
