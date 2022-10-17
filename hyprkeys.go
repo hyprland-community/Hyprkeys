@@ -14,54 +14,86 @@ import (
 // Keybind = | <kbd>SUPER + L</kbd> | firefox | , firefox
 // and put them in a markdown table
 func readHyprlandConfig() []string {
-	file, err := os.Open(os.Getenv("HOME") + "/.config/hypr/hyprland.conf")
+	// If --test is passed as an argument, read the test file
+	//file, err := os.Open(os.Getenv("HOME") + "/.config/hypr/hyprland.conf")
+	file, err := os.Open("test/hyprland.conf") // testing config
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	var keybinds []string
+	var kbKeybinds []string
+	var mKeybinds []string
+
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.HasPrefix(line, "bind=") {
-			keybinds = append(keybinds, line)
+			kbKeybinds = append(kbKeybinds, line)
 		} else if strings.HasPrefix(line, "bindm=") {
-			keybinds = append(keybinds, line)
+			mKeybinds = append(mKeybinds, line)
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
 		panic(err)
 	}
-	return keybinds
+	return kbKeybinds
+	return mKeybinds
 }
 
 // Return each keybind as a markdown table row
 // like this: | <kbd>SUPER + L</kbd> | firefox | , firefox
 
-func keybindsToMarkdown(keybinds []string) []string {
+// Pass both kbKeybinds and mKeybinds to this function
+func keybindsToMarkdown(kbKeybinds, mKeybinds []string) []string {
 	var markdown []string
-	for _, keybind := range keybinds {
+	for _, keybind := range kbKeybinds {
 		keybind = strings.TrimPrefix(keybind, "bind=")
 		keybind = strings.TrimPrefix(keybind, "bindm=")
-		keybind = strings.Replace(keybind, ",", " | ", 2)
-		keybind = strings.Replace(keybind, ",", " | ", 1)
-		keybind = "| <xkb> " + keybind + " </xkb> |"
-		markdown = append(markdown, keybind)
+		// Split "keybind" into a slice of strings
+		// based on the comma delimiter
+		keybindSlice := strings.SplitN(keybind, ",", 4)
+		// Print the keybind as a markdown table row
+		// like this: | <kbd>SUPER + L</kbd> | firefox | , firefox
+		markdown = append(markdown, "| <kbd>"+keybindSlice[0]+" + "+keybindSlice[1]+"</kbd> | "+keybindSlice[2]+" | "+keybindSlice[3]+" |")
+	}
+
+	for _, keybind := range mKeybinds {
+		keybind = strings.TrimPrefix(keybind, "bindm=")
+		// Split "keybind" into a slice of strings
+		// based on the comma delimiter
+		keybindSlice := strings.SplitN(keybind, ",", 3)
+		// Print the keybind as a markdown table row
+		// like this: | <kbd>SUPER + L</kbd> | firefox | , firefox
+		markdown = append(markdown, "| <kbd>"+keybindSlice[0]+" + "+keybindSlice[1]+"</kbd> | "+keybindSlice[2]+" |")
 	}
 	return markdown
 }
 
 func main() {
-	keybinds := readHyprlandConfig()
-	// Return each keybind on a new line before converting to markdown
-	for _, keybind := range keybinds {
-		println(keybind)
+	kbKeybinds := readHyprlandConfig()
+	mKeybinds := readHyprlandConfig()
+	// If --verbose is passed as an argument, print the keybinds
+	// to the terminal
+	if len(os.Args) > 1 && os.Args[1] == "--verbose" {
+		for _, keybind := range kbKeybinds {
+			println(keybind)
+		}
+		for _, keybind := range mKeybinds {
+			println(keybind)
+		}
 	}
-	markdown := keybindsToMarkdown(keybinds)
-	// Return each keybind on a new line after converting to markdown
-	for _, keybind := range markdown {
-		println(keybind)
+
+	// If --markdown is passed as an argument, print the keybinds
+	// as a markdown table
+	if len(os.Args) > 1 && os.Args[1] == "--markdown" {
+		markdown := keybindsToMarkdown(kbKeybinds, mKeybinds)
+		println("| Keybind | Dispatcher | Description |")
+		println("|---------|---------|-------------|")
+		for _, row := range markdown {
+			println(row)
+		}
 	}
+
 }
