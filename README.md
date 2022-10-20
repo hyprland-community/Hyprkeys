@@ -13,13 +13,15 @@ In case you want to use it, instructions are below:
 
 Alternatively, open this directory and run `go run .` to run without compiling.
 
-## TODO
+## Project Roadmap 
 
 - [x] Format keybinds better, maybe with a proper table
   - [x]  Remove the `+` in the keybinds that don't have modifiers
-  - [ ]  Add an extra column to mouse keybinds to match table titles
+  - [x]  Add an extra column to mouse keybinds to match table titles
+- [x] Optionally (--con_vars) parse variables and replace them with their actual value
+- [ ] Account for bind flags, that may be passed in any random order
 - [ ] Break code into multiple files, move command line parsing to a separate file
-- [ ] Optionally (--con_vars) parse variables and replace them with their actual value
+- [ ] Account for multiple arguments being passed at once
 - [ ] Somehow account for keybinds can be set dynamically?
 - [ ] Convert sway keybinds to Hyprland keybinds
 - [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
