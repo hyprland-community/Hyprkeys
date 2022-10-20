@@ -1,25 +1,31 @@
 # Hyprkeys
-A simple application to quickly get your Hyprand keybinds
 
-For now the software is in really early alpha quality. It is not recommended to use it yet.
-Not like it can break anything, but you'll have wasted your time
+A simple application to quickly get your Hyprand keybinds with
+much more to come. 
 
-In case you want to use it, instructions are below:
+⚠️ Hyprkeys is currently in early development and is not ready for use. Not like it can
+break anything, but you will have wasted your time.
+
+In case you still want to use it, instructions are below:
+*(Looking for testers and contributors, Go is not a language I often work with.)*
 
 ## Installation & Usage
+
 1. Download Go. You can find it [here](https://golang.org/dl/)
 2. Clone this repository with `git clone https://github.com/notashelf/hyprkeys`
 3. Build the application with `go build` and run it with `./hyprkeys`
 
 Alternatively, open this directory and run `go run .` to run without compiling.
 
-## Project Roadmap 
+## Project Roadmap
 
 - [x] Format keybinds better, maybe with a proper table
   - [x]  Remove the `+` in the keybinds that don't have modifiers
   - [x]  Add an extra column to mouse keybinds to match table titles
-- [x] Optionally (--con_vars) parse variables and replace them with their actual value
+- [ ] Optionally (--con_vars) parse variables and replace them with their actual value
 - [ ] Account for bind flags, that may be passed in any random order
+  - [ ] Figure out a regex to match the flags
+- [ ] Account for line comments in rows
 - [ ] Break code into multiple files, move command line parsing to a separate file
 - [ ] Account for multiple arguments being passed at once
 - [ ] Somehow account for keybinds can be set dynamically?
@@ -28,11 +34,13 @@ Alternatively, open this directory and run `go run .` to run without compiling.
 - [ ] Packaging for AUR and maybe other distros (why would anyone want that)
 
 ## License
+
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ## Contributing
+
 If you want to contribute, feel free to open a pull request. I'll try to review it as soon as possible.
 
 ## Example Output (as of 20 OCT 2022)
 
-**Moved to [test/example.md](test/markdown.md)**
+**Moved to [test/markdown.md](test/markdown.md)**
