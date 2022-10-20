@@ -9,5 +9,7 @@ May be subjected to change.
 |---------|------------|---------|
 | <kbd>MOD + L</kbd> | exec | amogus |
 | <kbd>L</kbd> | exec | sus |
+| <kbd>$MODKEY</kbd> | L | exec,impostor |
+| <kbd>$MODKEY</kbd> | R | exec, impostor2 |
 | <kbd>SUPER + mouse:420</kbd> | | movewindow |
 | <kbd>mouse:69</kbd> | | resizewindow |
