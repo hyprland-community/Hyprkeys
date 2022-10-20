@@ -50,22 +50,52 @@ func keybindsToMarkdown(kbKeybinds, mKeybinds []string) []string {
 	for _, keybind := range kbKeybinds {
 		keybind = strings.TrimPrefix(keybind, "bind=")
 		keybind = strings.TrimPrefix(keybind, "bindm=")
+
 		// Split "keybind" into a slice of strings
 		// based on the comma delimiter
 		keybindSlice := strings.SplitN(keybind, ",", 4)
+
+		// Trim whitespace from keybindSlice[1] to keybindSlice[3]
+		keybindSlice[1] = strings.TrimSpace(keybindSlice[1])
+		keybindSlice[2] = strings.TrimSpace(keybindSlice[2])
+		keybindSlice[3] = strings.TrimSpace(keybindSlice[3])
+
 		// Print the keybind as a markdown table row
-		// like this: | <kbd>SUPER + L</kbd> | firefox | , firefox
-		markdown = append(markdown, "| <kbd>"+keybindSlice[0]+" + "+keybindSlice[1]+"</kbd> | "+keybindSlice[2]+" | "+keybindSlice[3]+" |")
+		//markdown = append(markdown, "| <kbd>"+keybindSlice[0]+" + "+keybindSlice[1]+"</kbd> | "+keybindSlice[2]+" | "+keybindSlice[3]+" |")
+
+		// Check if keybindSlice is null
+		if keybindSlice[0] == "" {
+			keybindSlice[1] = strings.TrimSpace(keybindSlice[1])
+			markdown = append(markdown, "| <kbd>"+keybindSlice[1]+"</kbd> | "+keybindSlice[2]+" | "+keybindSlice[3]+" |")
+
+		} else {
+			markdown = append(markdown, "| <kbd>"+keybindSlice[0]+" + "+keybindSlice[1]+"</kbd> | "+keybindSlice[2]+" | "+keybindSlice[3]+" |")
+		}
 	}
 
 	for _, keybind := range mKeybinds {
 		keybind = strings.TrimPrefix(keybind, "bindm=")
+
 		// Split "keybind" into a slice of strings
 		// based on the comma delimiter
 		keybindSlice := strings.SplitN(keybind, ",", 3)
+
+		// Trim whitespace from keybindSlice[1] to keybindSlice[2]
+		keybindSlice[1] = strings.TrimSpace(keybindSlice[1])
+		keybindSlice[2] = strings.TrimSpace(keybindSlice[2])
+
 		// Print the keybind as a markdown table row
-		// like this: | <kbd>SUPER + L</kbd> | firefox | , firefox
-		markdown = append(markdown, "| <kbd>"+keybindSlice[0]+" + "+keybindSlice[1]+"</kbd> | "+keybindSlice[2]+" |")
+		//markdown = append(markdown, "| <kbd>"+keybindSlice[0]+" + "+keybindSlice[1]+"</kbd> | "+keybindSlice[2]+" |")
+
+		// Check if keybindSlice[0] is null
+		if keybindSlice[0] == "" {
+			markdown = append(markdown, "| <kbd>"+keybindSlice[1]+"</kbd> | | "+keybindSlice[2]+" |")
+		} else {
+			// put an "| |" inbetween the keybindSlice[0] and keybindSlice[1]
+			markdown = append(markdown, "| <kbd>"+keybindSlice[0]+" + "+keybindSlice[1]+"</kbd> | | "+keybindSlice[2]+" |")
+
+		}
+
 	}
 	return markdown
 }
