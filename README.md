@@ -15,7 +15,8 @@ Alternatively, open this directory and run `go run .` to run without compiling.
 
 ## TODO
 - [x] Format keybinds better, maybe with a proper table
-  - [ ]  Remove the `+` in the keybinds that don't have modifiers
+  - [x]  Remove the `+` in the keybinds that don't have modifiers
+  - [ ]  Add an extra column to mouse keybinds to match table titles
 - [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
 - [ ] Packaging for AUR and maybe other distros
 
