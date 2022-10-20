@@ -37,9 +37,7 @@ func readHyprlandConfig() ([]string, []string, []string, map[string]string) {
 			kbKeybinds = append(kbKeybinds, line)
 		} else if strings.HasPrefix(line, "bindm=") {
 			mKeybinds = append(mKeybinds, line)
-		}
-
-		if strings.HasPrefix(line, "$") {
+		} else if strings.HasPrefix(line, "$") {
 			// Probably not the best way to do this, but can't think of another occasion where a line would start with "$"
 			// and include "=", yet still not be a variable
 			if strings.Contains(line, "=") {
@@ -82,7 +80,6 @@ func keybindsToMarkdown(kbKeybinds, mKeybinds []string) []string {
 	var markdown []string
 	for _, keybind := range kbKeybinds {
 		keybind = strings.TrimPrefix(keybind, "bind=")
-		keybind = strings.TrimPrefix(keybind, "bindm=")
 
 		// Split "keybind" into a slice of strings
 		// based on the comma delimiter
