@@ -33,4 +33,4 @@ If you want to contribute, feel free to open a pull request. I'll try to review 
 
 ## Example Output (as of 20 OCT 2022)
 
-**Moved to [test/example.md](test/example.md)**
+**Moved to [test/example.md](test/markdown.md)**
