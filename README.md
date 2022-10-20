@@ -3,7 +3,7 @@
 A simple application to quickly get your Hyprand keybinds with
 much more to come. 
 
-⚠️ Hyprkeys is currently in early development and is not ready for use. Not like it can
+> ⚠️ Hyprkeys is currently in early development and is not ready for use. Not like it can
 break anything, but you will have wasted your time.
 
 In case you still want to use it, instructions are below:
