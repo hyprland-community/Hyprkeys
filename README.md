@@ -25,11 +25,17 @@ Alternatively, open this directory and run `go run .` to run without compiling.
 - [ ] Optionally (--con_vars) parse variables and replace them with their actual value
 - [ ] Account for bind flags, that may be passed in any random order
   - [ ] Figure out a regex to match the flags
-- [ ] Account for line comments in rows
+  - [ ] Account for line comments in rows
 - [ ] Break code into multiple files, move command line parsing to a separate file
-- [ ] Account for multiple arguments being passed at once
-- [ ] Somehow account for keybinds can be set dynamically?
-- [ ] Convert sway keybinds to Hyprland keybinds
+- [ ] Command line options
+  - [ ] Sort output by dispatcher
+  - [ ] Account for multiple arguments being passed at once
+- [ ] Somehow account for keybinds can be set dynamically? (I don't know how to do this)
+  - [ ] Add instructions for a pipe to `hyprkeys` to get the keybinds from
+- [ ] Convert sway keybinds to Hyprland keybinds with `--convert`
+  - [ ] Possibly more wayland compositors, sway is enough for now.
+- [ ] Get more than just keybinds, try and get all config options seperated by section
+  - [ ] Potentially rename the project
 - [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
 - [ ] Packaging for AUR and maybe other distros (why would anyone want that)
 
