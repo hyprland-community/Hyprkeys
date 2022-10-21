@@ -22,7 +22,7 @@ Alternatively, open this directory and run `go run .` to run without compiling.
 - [x] Format keybinds better, maybe with a proper table
   - [x]  Remove the `+` in the keybinds that don't have modifiers
   - [x]  Add an extra column to mouse keybinds to match table titles
-- [ ] Optionally (--con_vars) parse variables and replace them with their actual value
+- [x] Optionally (--con_vars) parse variables and replace them with their actual value
 - [ ] Account for bind flags, that may be passed in any random order
   - [ ] Figure out a regex to match the flags
   - [ ] Account for line comments in rows
