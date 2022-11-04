@@ -1,13 +1,14 @@
 # Hyprkeys
 
-A simple application to quickly get your Hyprand keybinds with
-much more to come. 
+A simple application to quickly get your Hyprland keybinds with
+much more to come.
 
 > ⚠️ Hyprkeys is currently in early development and is not ready for use. Not like it can
 break anything, but you will have wasted your time.
 
 In case you still want to use it, instructions are below:
-*(Looking for testers and contributors, Go is not a language I often work with.)*
+
+**(Looking for testers and contributors, Go is not a language I often work with.)**
 
 ## Installation & Usage
 
@@ -22,7 +23,7 @@ Alternatively, open this directory and run `go run .` to run without compiling.
 - [x] Format keybinds better, maybe with a proper table
   - [x]  Remove the `+` in the keybinds that don't have modifiers
   - [x]  Add an extra column to mouse keybinds to match table titles
-- [x] Optionally (--con_vars) parse variables and replace them with their actual value
+- [x] Optionally (--variables) parse variables and replace them with their actual value
 - [ ] Account for bind flags, that may be passed in any random order
   - [ ] Figure out a regex to match the flags
   - [ ] Account for line comments in rows
