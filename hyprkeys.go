@@ -4,18 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 )
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
-// Hyprland configuration file is stored in $HOME/.config/hypr/hyprland.conf
-// A keyboard bind looks like this: bind=MOD,KEY,exec,COMMAND
-// A mouse bind looks like this: bindm=MOD,KEY,exec,COMMAND
-// We want to return the keys like this:
-// Keybind = | <kbd>SUPER + L</kbd> | firefox | , firefox
-// and put them in a markdown table
 func readHyprlandConfig() ([]string, []string, []string, map[string]string) {
-	// If --test is passed as an argument, read the test file
+	// TODO: If --test is passed as an argument, read the test file
 	//file, err := os.Open(os.Getenv("HOME") + "/.config/hypr/hyprland.conf")
 	file, err := os.Open("test/hyprland.conf") // testing config
 	if err != nil {
@@ -33,10 +28,18 @@ func readHyprlandConfig() ([]string, []string, []string, map[string]string) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		if strings.HasPrefix(line, "bind=") {
-			kbKeybinds = append(kbKeybinds, line)
-		} else if strings.HasPrefix(line, "bindm=") {
+
+		matched, err := regexp.MatchString("^bind.*[lrme]*.*=", line)
+		// TODO: regexp.Compile() instead of regexp.MatchString()
+
+		if err != nil {
+			panic(err)
+		}
+
+		if matched {
+			// If the line starts with any bind type, append it to the keybinds slice
 			mKeybinds = append(mKeybinds, line)
+
 		} else if strings.HasPrefix(line, "$") {
 			// Probably not the best way to do this, but can't think of another occasion where a line would start with "$"
 			// and include "=", yet still not be a variable
@@ -57,19 +60,6 @@ func readHyprlandConfig() ([]string, []string, []string, map[string]string) {
 
 	return kbKeybinds, mKeybinds, variables, variableMap
 }
-
-// func parseVariables(variables []string) []string {
-// 	var parsedVariables []string
-// 	for _, variable := range variables {
-// 		variable = strings.TrimPrefix(variable, "$")
-// 		variableSlice := strings.SplitN(variable, "=", 2)
-// 		variableSlice[0] = strings.TrimSpace(variableSlice[0])
-// 		variableSlice[1] = strings.TrimSpace(variableSlice[1])
-// 		parsedVariables = append(parsedVariables, variableSlice[0]+" = "+variableSlice[1])
-// 	}
-
-// 	return parsedVariables
-// }
 
 // Return each keybind as a markdown table row
 // like this: | <kbd>SUPER + L</kbd> | firefox | , firefox
