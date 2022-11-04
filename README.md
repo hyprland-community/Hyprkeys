@@ -24,9 +24,10 @@ Alternatively, open this directory and run `go run .` to run without compiling.
   - [x]  Remove the `+` in the keybinds that don't have modifiers
   - [x]  Add an extra column to mouse keybinds to match table titles
 - [x] Optionally (--variables) parse variables and replace them with their actual value
-- [ ] Account for bind flags, that may be passed in any random order
-  - [ ] Figure out a regex to match the flags
-  - [ ] Account for line comments in rows
+- [x] Account for bind flags, that may be passed in any random order
+  - [x] Figure out a regex to match the flags
+    - [x] Figure out why the regex doesn't work
+- [ ] Account for line comments in rows
 - [ ] Break code into multiple files, move command line parsing to a separate file
 - [ ] Command line options
   - [ ] Sort output by dispatcher

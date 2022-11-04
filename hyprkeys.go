@@ -28,13 +28,16 @@ func readHyprlandConfig() ([]string, []string, []string, map[string]string) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		if strings.HasPrefix(line, "bind=") {
-			kbKeybinds = append(kbKeybinds, line)
 
-		} else if strings.HasPrefix(line, regexp.MustCompile(`^bind.*[lrme]*.*=`).String()) { // TODO: Fix this regex somehow
-			mKeybinds = append(mKeybinds, line)
+		matched, err := regexp.MatchString("^bind.*[lrme]*.*=", line)
+		// TODO: regexp.Compile() instead of regexp.MatchString()
 
-		} else if strings.HasPrefix(line, "bindm=") {
+		if err != nil {
+			panic(err)
+		}
+
+		if matched {
+			// If the line starts with any bind type, append it to the keybinds slice
 			mKeybinds = append(mKeybinds, line)
 
 		} else if strings.HasPrefix(line, "$") {
