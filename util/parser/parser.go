@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -69,16 +68,14 @@ func ParseBlocks(content string) map[string]string {
 	for i, letter := range content {
 		letter := string(letter)
 		if IsLabel(label_buffer, labels, i, content) == true {
+			firstpass = true // without this the global settings before first block dont show up properly :/
+			// removes the label names from the prev block contents
 			if firstpass {
-				// removes the label names from the prev block contents
 				con := depth[len(depth)-1]
 				depth[len(depth)-1] = con[:len(con)-len(label_buffer)]
-				con = depth[0]
-				depth[0] = con[:len(con)-len(label_buffer)]
 			}
 		}
 		if letter == "{" {
-			firstpass = true // without this the global settings before first block dont show up properly :/
 			depth_label = append(depth_label, GetLabel(i, content))
 			label_buffer = ""
 			depth = append(depth, "")
@@ -102,9 +99,5 @@ func ParseBlocks(content string) map[string]string {
 
 	// set the global block
 	blocks["global"] = TrimBlock(depth[0])
-
-	for label, block := range blocks {
-		fmt.Println(label + "::\n" + block)
-	}
 	return blocks
 }
