@@ -19,12 +19,12 @@ func readHyprlandConfig() ([]string, []string, []string, map[string]string) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	m := make(map[string]string)
+	vm := make(map[string]string)
 
 	var kbKeybinds []string
 	var mKeybinds []string
 	var variables []string
-	var variableMap = m
+	var variableMap = vm
 
 	for scanner.Scan() {
 		line := scanner.Text()
