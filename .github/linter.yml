@@ -1,7 +1,7 @@
 # Go linting using Revive (https://revive.run)
 name: Lint
 on:
-  pull_request:
+  pull_request: [ main ] 
   push:
     paths:
       - '**.go'
