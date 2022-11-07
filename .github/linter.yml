@@ -1,0 +1,20 @@
+# Go linting using Revive (https://revive.run)
+name: Go Linter
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  lint: 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Revive Action by pulling pre-built image
+      uses: docker://morphy/revive-action:v2
+
+with:
+    formatter: friendly
+
