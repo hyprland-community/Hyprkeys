@@ -1,7 +1,12 @@
 package parser
 
 import (
+	"fmt"
+	"strconv"
 	"strings"
+
+	"github.com/oleiade/reflections"
+	props "notashelf.dev/hyprkeys/util/properties"
 )
 
 // check if word is a valid label
@@ -100,4 +105,133 @@ func ParseBlocks(content string) map[string]string {
 	// set the global block
 	blocks["global"] = TrimBlock(depth[0])
 	return blocks
+}
+
+func ParseComments(content string) string {
+	out := ""
+	for _, line := range strings.Split(content, "\n") {
+		for _, i := range line {
+			if i == '#' {
+				break
+			} else {
+				out += string(i)
+			}
+		}
+		out += "\n"
+	}
+	return out
+}
+
+func ParseConfig(blocks map[string]string) props.Config {
+	defaults := props.NewConf()
+	for rawlabel, block := range blocks {
+		label := strings.ToUpper(string(rawlabel[0])) + rawlabel[1:]
+		if label == "Global" {
+			reflections.SetField(&defaults, label, block)
+			continue
+		}
+		var section interface{}
+		var err error
+		if label == "Touchpad" || label == "Touchdevice" {
+			section, err = reflections.GetField(defaults.Input, label)
+		} else {
+			section, err = reflections.GetField(&defaults, label)
+		}
+		if err != nil {
+			fmt.Println("error parsing a label: "+label, err)
+			continue
+		}
+		lines := strings.Split(block, "\n")
+		keyval := make(map[string]string)
+		for _, i := range lines {
+			pairs := strings.Split(i, "=")
+			pairs[0] = strings.Trim(pairs[0], " \n")
+			if len(pairs) == 2 {
+				pairs[1] = strings.Trim(pairs[1], " \n")
+				keyval[pairs[0]] = pairs[1]
+			} else {
+				keyval[pairs[0]] = ""
+			}
+		}
+		for key, val := range keyval {
+			key = strings.Replace(key, ".", "__", 1)
+			key = "S_" + key
+			val = strings.Trim(val, " \n")
+			val = strings.ReplaceAll(val, "yes", "true")
+			val = strings.ReplaceAll(val, "no", "false")
+			val = strings.ReplaceAll(val, "on", "true")
+			val = strings.ReplaceAll(val, "off", "false")
+			fieldt, err := reflections.GetFieldType(section, key)
+			if err != nil {
+				fmt.Println("error parsing a field: "+key, err)
+				continue
+			}
+			if fieldt == "bool" {
+				parsed_val, err := strconv.ParseBool(val)
+				if err != nil {
+					fmt.Println("error parsing a type: "+fieldt+"  with data: "+val, err)
+					continue
+				}
+				err = reflections.SetField(section, key, parsed_val)
+				if err != nil {
+					fmt.Println("failed setting field: "+key+"  value: "+val+"||", err)
+					continue
+				}
+			} else if fieldt == "int64" {
+
+				parsed_val, err := strconv.ParseInt(val, 6, 64)
+				if err != nil {
+					fmt.Println("error parsing a type: "+fieldt+"  with data: "+val, err)
+					continue
+				}
+				err = reflections.SetField(section, key, parsed_val)
+				if err != nil {
+					fmt.Println("failed setting field: "+key+"  value: "+val+"||", err)
+					continue
+				}
+			} else if fieldt == "float64" {
+
+				parsed_val, err := strconv.ParseFloat(val, 64)
+				if err != nil {
+					fmt.Println("error parsing a type: "+fieldt+"  with data: "+val, err)
+					continue
+				}
+				err = reflections.SetField(section, key, parsed_val)
+				if err != nil {
+					fmt.Println("failed setting field: "+key+"  value: "+val+"||", err)
+					continue
+				}
+			} else if fieldt == "[2]float64" {
+				vec := strings.Split(val, " ")
+				parsed_val := [2]int{0, 0}
+				for i, v := range vec[:2] {
+					parsed_v, err := strconv.ParseFloat(v, 64)
+					if err != nil {
+						fmt.Println("error parsing a type: "+fieldt+"  with data: "+val, err)
+						break
+					}
+					parsed_val[i] = int(parsed_v)
+				}
+
+				err = reflections.SetField(section, key, parsed_val)
+				if err != nil {
+					fmt.Println("failed setting field: "+key+"  value: "+val+"||", err)
+					continue
+				}
+			} else {
+				err = reflections.SetField(section, key, val)
+				if err != nil {
+					fmt.Println("failed setting field(final else): "+key+"  with data: "+val, err)
+					continue
+				}
+			}
+		}
+	}
+	return defaults
+}
+
+func Parse(content string) props.Config {
+	content = ParseComments(content)
+	blocks := ParseBlocks(content)
+	return ParseConfig(blocks)
 }

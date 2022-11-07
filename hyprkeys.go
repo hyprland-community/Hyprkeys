@@ -2,10 +2,14 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
+
+	parser "notashelf.dev/hyprkeys/util/parser"
 )
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
@@ -123,45 +127,62 @@ func keybindsToMarkdown(kbKeybinds, mKeybinds []string) []string {
 func main() {
 	kbKeybinds, mKeybinds, variables, variableMap := readHyprlandConfig()
 
-	// If --verbose is passed as an argument, print the keybinds
-	// to the terminal
-	if len(os.Args) > 1 && os.Args[1] == "--verbose" {
-		for _, keybind := range kbKeybinds {
-			fmt.Println(keybind)
+	if len(os.Args) > 1 {
 
-		}
-		for _, keybind := range mKeybinds {
-			println(keybind)
-		}
-	}
+		// If --verbose is passed as an argument, print the keybinds
+		// to the terminal
+		if os.Args[1] == "--verbose" {
+			for _, keybind := range kbKeybinds {
+				fmt.Println(keybind)
 
-	// If --markdown is passed as an argument, print the keybinds
-	// as a markdown table
-	if len(os.Args) > 1 && os.Args[1] == "--markdown" {
-		markdown := keybindsToMarkdown(kbKeybinds, mKeybinds)
-		println("| Keybind | Dispatcher | Command |")
-		println("|---------|------------|---------|")
-		for _, row := range markdown {
-			println(row)
-		}
-	}
-
-	if len(os.Args) > 1 && os.Args[1] == "--variables" {
-		for _, variable := range variables {
-			println(variable)
-		}
-
-		// Now we replace the variables in the markdown table with their values
-		// and print the table if --markdown is also passed as an argument
-		markdown := keybindsToMarkdown(kbKeybinds, mKeybinds)
-		println("| Keybind | Dispatcher | Command |")
-		println("|---------|------------|---------|")
-		for _, row := range markdown {
-			for key, value := range variableMap {
-
-				row = strings.ReplaceAll(row, key, value)
 			}
-			println(row)
+			for _, keybind := range mKeybinds {
+				println(keybind)
+			}
+		}
+
+		// If --markdown is passed as an argument, print the keybinds
+		// as a markdown table
+		if os.Args[1] == "--markdown" {
+			markdown := keybindsToMarkdown(kbKeybinds, mKeybinds)
+			println("| Keybind | Dispatcher | Command |")
+			println("|---------|------------|---------|")
+			for _, row := range markdown {
+				println(row)
+			}
+		}
+
+		if os.Args[1] == "--variables" {
+			for _, variable := range variables {
+				println(variable)
+			}
+
+			// Now we replace the variables in the markdown table with their values
+			// and print the table if --markdown is also passed as an argument
+			markdown := keybindsToMarkdown(kbKeybinds, mKeybinds)
+			println("| Keybind | Dispatcher | Command |")
+			println("|---------|------------|---------|")
+			for _, row := range markdown {
+				for key, value := range variableMap {
+
+					row = strings.ReplaceAll(row, key, value)
+				}
+				println(row)
+			}
+		}
+
+		if os.Args[1] == "--blocks" {
+			file, err := ioutil.ReadFile("test/hyprland.conf")
+			if err != nil {
+				panic(err)
+			}
+			content := string(file)
+			config := parser.Parse(content)
+			data, err := json.MarshalIndent(config, "", "  ")
+			if err != nil {
+				fmt.Println(err)
+			}
+			fmt.Printf("%s\n", data)
 		}
 	}
 }
