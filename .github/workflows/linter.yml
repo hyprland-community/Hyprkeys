@@ -8,7 +8,7 @@ on:
     paths:
       - '**.go'
       - 'revive.toml'
-      - '.github/workflows/linter.yaml'
+      - '.github/workflows/linter.yml'
 
 
 jobs:
