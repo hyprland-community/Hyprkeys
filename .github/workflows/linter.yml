@@ -1,12 +1,13 @@
 # Go linting using Revive (https://revive.run)
 name: Lint
 on:
-  pull_request: [ main ] 
+  pull_request: 
+    branches: [ main ] 
   push:
     paths:
       - '**.go'
       - 'revive.toml'
-      - '.github/workflows/lint.yaml'
+      - '.github/workflows/linter.yaml'
 
 
 jobs:
