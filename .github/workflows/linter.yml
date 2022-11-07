@@ -1,6 +1,7 @@
 # Go linting using Revive (https://revive.run)
 name: Lint
 on:
+  workflow_dispatch:
   pull_request: 
     branches: [ main ] 
   push:
