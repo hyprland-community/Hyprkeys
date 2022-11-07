@@ -152,7 +152,7 @@ type S_gestures struct {
 // config
 
 type Config struct {
-	Global     string
+	Global     *S_global
 	General    *S_general
 	Misc       *S_misc
 	Debug      *S_debug
@@ -165,9 +165,23 @@ type Config struct {
 	Gestures   *S_gestures
 }
 
+type S_global struct {
+	S_binds     []map[string][]string
+	S_variables map[string]string
+	S_raw       string
+}
+
+func NewGlobal() *S_global {
+	return &S_global{
+		S_binds:     make([]map[string][]string, 0),
+		S_variables: make(map[string]string),
+		S_raw:       "",
+	}
+}
+
 func NewConf() Config {
 	return Config{
-		Global: "",
+		Global: NewGlobal(),
 		General: &S_general{
 			S_sensitivity:             1.0,
 			S_apply_sens_to_raw:       false,

@@ -44,8 +44,9 @@ func GetLabel(i int, content string) string {
 func TrimBlock(block string) string {
 	out := ""
 	for _, line := range strings.Split(block, "\n") {
-		if len(strings.Split(line, " ")) > 0 {
-			out += strings.Trim(line, " \n") + "\n"
+		line = strings.Trim(line, " \n")
+		if len(line) > 0 {
+			out += line + "\n"
 		}
 	}
 	return out
@@ -119,7 +120,28 @@ func ParseComments(content string) string {
 		}
 		out += "\n"
 	}
-	return out
+	return TrimBlock(out)
+}
+
+func ParseGlobal(content string) *props.S_global {
+	lines := strings.Split(content, "\n")
+	global := props.NewGlobal()
+	for _, line := range lines {
+		line = strings.Trim(line, " ")
+		parts := strings.SplitN(line, "=", 2)
+		if len(parts) == 2 {
+			parts[0] = strings.Trim(parts[0], " ")
+			parts[1] = strings.Trim(parts[1], " ")
+			if strings.HasPrefix(line, "$") {
+				global.S_variables[parts[0]] = parts[1]
+			} else if strings.HasPrefix(line, "bind") {
+				global.S_binds = append(global.S_binds, map[string][]string{parts[0]: strings.Split(parts[1], ",")})
+			}
+		} else {
+			global.S_raw += line + "\n"
+		}
+	}
+	return global
 }
 
 func ParseConfig(blocks map[string]string) props.Config {
@@ -127,8 +149,7 @@ func ParseConfig(blocks map[string]string) props.Config {
 	for rawlabel, block := range blocks {
 		label := strings.ToUpper(string(rawlabel[0])) + rawlabel[1:]
 		if label == "Global" {
-			reflections.SetField(&defaults, label, block)
-			continue
+			reflections.SetField(&defaults, label, ParseGlobal(block))
 		}
 		var section interface{}
 		var err error
