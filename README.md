@@ -1,7 +1,6 @@
 # Hyprkeys
 
-A simple application to quickly get your Hyprland keybinds with
-much more to come.
+A simple, and relatively fast application that 
 
 > ⚠️ Hyprkeys is currently in early development and is not ready for use. Not like it can
 break anything, but you will have wasted your time.
@@ -15,6 +14,7 @@ In case you still want to use it, instructions are below:
 1. Download Go. You can find it [here](https://golang.org/dl/)
 2. Clone this repository with `git clone https://github.com/notashelf/hyprkeys`
 3. Build the application with `go build` and run it with `./hyprkeys`
+   - There are multiple flags you can use, see `./hyprkeys --help` for more information
 
 Alternatively, open this directory and run `go run .` to run without compiling.
 
@@ -27,19 +27,27 @@ Alternatively, open this directory and run `go run .` to run without compiling.
 - [x] Account for bind flags, that may be passed in any random order
   - [x] Figure out a regex to match the flags
     - [x] Figure out why the regex doesn't work
-- [ ] Account for line comments in rows
-- [ ] Break code into multiple files, move command line parsing to a separate file
+- [x] Break code into multiple files, move command line parsing to a separate file
+- [ ] Get more than just keybinds, try and get all config options separated by section
+  - [ ] Potentially rename the project
 - [ ] Command line options
   - [ ] Sort output by dispatcher
   - [ ] Account for multiple arguments being passed at once
+  - [ ] formatting flags for json (maybe) and markdown
+  - [ ] search by config section or section:value
+- [ ] Account for line comments in rows
 - [ ] Somehow account for keybinds can be set dynamically? (I don't know how to do this)
-  - [ ] Add instructions for a pipe to `hyprkeys` to get the keybinds from
+  - [ ] Add instructions for a pipe to `hyprkeys` to get the keybinds from (???)
 - [ ] Convert sway keybinds to Hyprland keybinds with `--convert`
-  - [ ] Possibly more wayland compositors, sway is enough for now.
-- [ ] Get more than just keybinds, try and get all config options seperated by section
-  - [ ] Potentially rename the project
-- [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
+  - [ ] Possibly more wayland compositors, but sway is enough for now.
+- [ ] Add a way to change keybinds after reading them (???)
 - [ ] Packaging for AUR and maybe other distros (why would anyone want that)
+
+### Current TODOs
+
+- [ ] (hyprkeys.go) Trim "bind = " from keybinds before printing in markdown
+- [ ] (hyprkeys.go) Switch regex mechanism
+- [ ] (hyprkeys.go) `--help flag`
 
 ## License
 
@@ -49,6 +57,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 If you want to contribute, feel free to open a pull request. I'll try to review it as soon as possible.
 
-## Example Output (as of 20 OCT 2022)
+### Contributors
 
+- [flick0])(https://github.com/flick0) - Awesome job with the structs and general configuration parsing
+
+## Example Output
 **Moved to [test/markdown.md](test/markdown.md)**
