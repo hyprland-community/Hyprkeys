@@ -205,6 +205,11 @@ func main() {
 				fmt.Println(err)
 			}
 			fmt.Printf("%s\n", data)
+			save := parser.BuildConf(config)
+			err = ioutil.WriteFile("test/hyprland-generated.conf", []byte(save), 0644)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 }
