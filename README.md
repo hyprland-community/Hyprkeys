@@ -16,9 +16,9 @@ In case you still want to use it, instructions are below:
 
 1. Download Go. You can find it [here](https://golang.org/dl/)
 2. Clone this repository with `git clone https://github.com/notashelf/hyprkeys`
-3. Build the application with `go build` and run it with `./hyprkeys`
+3. Build the application with `go build` and run it with `./hyprkeys`. This will display a list of command line options.
 
-Alternatively, open this directory and run `go run .` to run without compiling.
+**Alternatively, open this directory and run `go run .` to run without compiling.**
 
 ## Project Roadmap
 
@@ -30,7 +30,8 @@ Alternatively, open this directory and run `go run .` to run without compiling.
   - [x] Figure out a regex to match the flags
     - [x] Figure out why the regex doesn't work
 - [ ] Account for line comments in rows
-- [ ] Break code into multiple files, move command line parsing to a separate file
+- [ ] Break code into multiple files
+    - [ ] move command line parsing to a separate file
 - [ ] Command line options
   - [ ] Sort output by dispatcher
   - [ ] Account for multiple arguments being passed at once
@@ -59,6 +60,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 If you want to contribute, feel free to open a pull request. I'll try to review it as soon as possible.
 
-## Example Output (as of 20 OCT 2022)
+## Example Output (as of 20 NOV 2022)
 
 **Moved to [test/markdown.md](test/markdown.md)**
