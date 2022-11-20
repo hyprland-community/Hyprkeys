@@ -1,0 +1,38 @@
+# Go linting using Revive (https://revive.run)
+name: Lint
+on:
+  workflow_dispatch:
+  pull_request: 
+    branches: [ main ] 
+  push:
+    paths:
+      - '**.go'
+      - 'revive.toml'
+      - '.github/workflows/linter.yml'
+
+
+jobs:
+  lint: 
+    name: Revive
+    runs-on: ubuntu-latest
+    environment: production
+      
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.19'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Run Revive Action by pulling pre-built image
+      uses: docker://morphy/revive-action:v2
+      with:
+        formatter: friendly
+

@@ -96,7 +96,7 @@ type S_touchpad struct {
 	S_disable_while_typing    bool
 	S_clickfinger_behavior    bool
 	S_middle_button_emulation bool
-	S_tap_to_click            bool //say vaxry to rename this shit to use _
+	S_tap_to_click            bool //say vaxry to rename this shit to use underscores instead of dashes
 	S_drag_lock               bool
 	S_scroll_factor           float64
 	S_transform               int64

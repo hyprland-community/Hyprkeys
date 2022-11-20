@@ -1,7 +1,9 @@
 # Hyprkeys
 
-A simple application to quickly get your Hyprland keybinds with
-much more to come.
+A simple, and relatively fast application that returns your Hyprland keys.
+
+*No, not just keybinds. We now return config sections as well*
+
 
 > ⚠️ Hyprkeys is currently in early development and is not ready for use. Not like it can
 break anything, but you will have wasted your time.
@@ -40,6 +42,14 @@ Alternatively, open this directory and run `go run .` to run without compiling.
   - [ ] Potentially rename the project
 - [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
 - [ ] Packaging for AUR and maybe other distros (why would anyone want that)
+
+
+### Current TODOs
+
+- [ ] (hyprkeys.go) Trim "bind = " from keybinds before printing in markdown
+- [ ] (hyprkeys.go) Switch regex mechanism
+- [x] (hyprkeys.go) `--help flag`
+Search for `TODO` in the code for more information.
 
 ## License
 

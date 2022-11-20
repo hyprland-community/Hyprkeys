@@ -1,7 +1,4 @@
 # Go Build & Release CI
-
-# This is a basic workflow to help you get started with Actions
-
 name: Go Build & Release CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -16,17 +13,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v3
     - uses: actions/setup-go@v3
       with:
         check-latest: true
         cache: true
-    - run: go run . --verbose
-    - run: go run . --markdown
-    - run: go run . --variables
 
     # Build the binary with go build
     - name: Build the binary
       run: go build -o Hyprkeys
+
+    # Publish the binary to Github Releases
 

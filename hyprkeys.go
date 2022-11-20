@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io/ioutil" // io/ioutil is deprecated, use io and os packages instead
 	"os"
 	"regexp"
 	"strings"
@@ -14,11 +14,21 @@ import (
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
 func readHyprlandConfig() ([]string, []string, []string, map[string]string) {
-	// TODO: If --test is passed as an argument, read the test file
-	//file, err := os.Open(os.Getenv("HOME") + "/.config/hypr/hyprland.conf")
-	file, err := os.Open("test/hyprland.conf") // testing config
+
+	// If --test flag is passed, read from test file
+	// otherwise read from ~/.config/hypr/hyprland.conf
+	var configPath string
+	if len(os.Args) > 1 && os.Args[1] == "--test" {
+		configPath = "test/hyprland.conf"
+	} else {
+		configPath = os.Getenv("HOME") + "/.config/hypr/hyprland.conf"
+	}
+
+	// Open the file
+	file, err := os.Open(configPath)
 	if err != nil {
-		panic(err)
+		fmt.Println("Error opening file:", err)
+		os.Exit(1)
 	}
 	defer file.Close()
 
@@ -127,7 +137,19 @@ func keybindsToMarkdown(kbKeybinds, mKeybinds []string) []string {
 func main() {
 	kbKeybinds, mKeybinds, variables, variableMap := readHyprlandConfig()
 
-	if len(os.Args) > 1 {
+	// If the first argument is empty, show the help message
+	if len(os.Args) == 1 {
+		fmt.Println("Usage: hyprkeys [OPTIONS]")
+		fmt.Println("Generate a markdown table of keybinds from a Hyprland configuration file.")
+		fmt.Println("If no file is specified, the default configuration file is used.")
+		fmt.Println("Options:")
+		fmt.Println("  -h, --help\t\tShow this help message")
+		fmt.Println("  -t, --test\t\tUse the test configuration file")
+		fmt.Println("  -m, --markdown\t\tPrint the binds as a markdown table")
+		fmt.Println("  -v, --verbose\t\tPrint text as is, without making it pretty")
+		fmt.Println("  -V, --version\t\tShow the version number")
+	} else if len(os.Args) > 1 {
+		// Print args
 
 		// If --verbose is passed as an argument, print the keybinds
 		// to the terminal
@@ -172,7 +194,7 @@ func main() {
 		}
 
 		if os.Args[1] == "--blocks" {
-			file, err := ioutil.ReadFile("test/hyprland.conf")
+			file, err := ioutil.ReadFile("test/hyprland.conf") // TODO: make this use configPath
 			if err != nil {
 				panic(err)
 			}
