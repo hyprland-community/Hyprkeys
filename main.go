@@ -34,9 +34,6 @@ func main() {
 	if flags.ConfigPath == "" {
 		flags.ConfigPath = filepath.Join(os.Getenv("HOME"), ".config/hypr/hyprland.conf")
 	}
-	if flags.Test {
-		flags.ConfigPath = "test/hyprland.conf"
-	}
 
 	configValues, err := reader.ReadHyprlandConfig(flags.ConfigPath)
 	if err != nil {

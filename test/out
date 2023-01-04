@@ -1,0 +1,43 @@
+bind = $mainMod Q exec kitty #
+bind = $mainMod C killactive  #
+bind = $mainMod M exit  #
+bind = $mainMod E exec dolphin #
+bind = $mainMod V togglefloating  #
+bind = $mainMod R exec wofi --show drun #
+bind = $mainMod P pseudo  #dwindle
+bind = $mainMod J togglesplit  #dwindle
+input {
+	kb_layout = us
+	follow_mouse = 1
+	sensitivity = 0#-1.0-1.0,0meansnomodification.
+	touchpad {
+		natural_scroll = no
+	}
+}
+general {
+	layout = dwindle
+	gaps_in = 5
+	gaps_out = 20
+	border_size = 2
+	col.active_border = rgba(1affffee)
+	col.inactive_border = rgba(595959aa)
+}
+decoration {
+	blur = yes
+	shadow_render_power = 3
+	col.shadow = rgba(1a1a1aee)
+	shadow_range = 4
+	rounding = 10
+	blur_size = 3
+	blur_passes = 1
+	blur_new_optimizations = on
+	drop_shadow = yes
+}
+animation {
+	enabled = yes
+	bezier = myBezier,0.05,0.9,0.1,1.05
+	animation = workspaces,1,6,default
+}
+gestures {
+	workspace_swipe = off
+}

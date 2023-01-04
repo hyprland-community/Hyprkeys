@@ -6,7 +6,6 @@ import (
 
 type Flags struct {
 	Help       bool
-	Test       bool
 	Json       bool
 	Markdown   bool
 	Raw        bool
@@ -19,7 +18,6 @@ type Flags struct {
 
 func ReadFlags() *Flags {
 	optHelp := getopt.BoolLong("help", 'h', "Show this help menu")
-	optTest := getopt.BoolLong("test", 't', "Use the test configuration file")
 	optJson := getopt.BoolLong("json", 'j', "Return settigns as json")
 	optMarkdown := getopt.BoolLong("markdown", 'm', "Print the binds as a markdown table")
 	optRaw := getopt.BoolLong("raw", 'r', "Print text as is, without making it pretty")
@@ -31,7 +29,6 @@ func ReadFlags() *Flags {
 	getopt.Parse()
 	return &Flags{
 		Help:       *optHelp,
-		Test:       *optTest,
 		Json:       *optJson,
 		Markdown:   *optMarkdown,
 		Raw:        *optRaw,
