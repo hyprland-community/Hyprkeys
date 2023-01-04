@@ -16,9 +16,8 @@ In case you still want to use it, instructions are below:
 
 1. Download Go. You can find it [here](https://golang.org/dl/)
 2. Clone this repository with `git clone https://github.com/notashelf/hyprkeys`
-3. Build the application with `go build` and run it with `./hyprkeys`. This will display a list of command line options.
-
-**Alternatively, open this directory and run `go run .` to run without compiling.**
+3. Install the application with `make build` then `sudo make install`
+5. You can run the application with `hyprland`
 
 ## Project Roadmap
 
@@ -29,17 +28,17 @@ In case you still want to use it, instructions are below:
 - [x] Account for bind flags, that may be passed in any random order
   - [x] Figure out a regex to match the flags
     - [x] Figure out why the regex doesn't work
-- [ ] Account for line comments in rows
-- [ ] Break code into multiple files
-    - [ ] move command line parsing to a separate file
+- [x] Account for line comments in rows
+- [x] Break code into multiple files
+    - [x] move command line parsing to a separate file
 - [ ] Command line options
   - [ ] Sort output by dispatcher
-  - [ ] Account for multiple arguments being passed at once
+  - [x] Account for multiple arguments being passed at once
 - [ ] Somehow account for keybinds can be set dynamically? (I don't know how to do this)
   - [ ] Add instructions for a pipe to `hyprkeys` to get the keybinds from
 - [ ] Convert sway keybinds to Hyprland keybinds with `--convert`
   - [ ] Possibly more wayland compositors, sway is enough for now.
-- [ ] Get more than just keybinds, try and get all config options seperated by section
+- [x] Get more than just keybinds, try and get all config options seperated by section
   - [ ] Potentially rename the project
 - [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
 - [ ] Packaging for AUR and maybe other distros (why would anyone want that)
@@ -47,8 +46,8 @@ In case you still want to use it, instructions are below:
 
 ### Current TODOs
 
-- [ ] (hyprkeys.go) Trim "bind = " from keybinds before printing in markdown
-- [ ] (hyprkeys.go) Switch regex mechanism
+- [x] (hyprkeys.go) Trim "bind = " from keybinds before printing in markdown
+- [x] (hyprkeys.go) Switch regex mechanism
 - [x] (hyprkeys.go) `--help flag`
 Search for `TODO` in the code for more information.
 
