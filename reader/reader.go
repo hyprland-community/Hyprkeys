@@ -2,6 +2,7 @@ package reader
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 	// io/ioutil is deprecated, use io and os packages instead
@@ -15,10 +16,18 @@ type Setting struct {
 	SubCategories []Setting
 }
 
+type Keybind struct {
+	BindType   string
+	Bind       string
+	Dispatcher string
+	Command    string
+	Comments   string
+}
+
 type ConfigValues struct {
 	Settings      Settings
-	KeyboardBinds []string
-	MouseBinds    []string
+	KeyboardBinds []*Keybind
+	MouseBinds    []*Keybind
 }
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
@@ -32,17 +41,17 @@ func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
 
 	scanner := bufio.NewScanner(file)
 
-	var kbKeybinds []string
-	var mKeybinds []string
+	var kbKeybinds []*Keybind
+	var mKeybinds []*Keybind
 	// var variables []string
 
 	for scanner.Scan() {
 		line := scanner.Text()
 		switch {
 		case strings.HasPrefix(line, "bindm"):
-			mKeybinds = append(mKeybinds, line)
+			mKeybinds = append(mKeybinds, makeBind(line))
 		case strings.HasPrefix(line, "bind"):
-			kbKeybinds = append(kbKeybinds, line)
+			kbKeybinds = append(kbKeybinds, makeBind(line))
 		case strings.HasPrefix(line, "input"):
 			settings = append(settings, handler("input", scanner))
 		case strings.HasPrefix(line, "general"):
@@ -70,32 +79,43 @@ func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
 		KeyboardBinds: kbKeybinds,
 		MouseBinds:    mKeybinds,
 	}
-
 	return configValues, nil
 }
 
-func generalHandler(name string, scanner *bufio.Scanner) *Setting {
-	settings := make(map[string]string)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.HasPrefix(line, "}") {
-			return &Setting{
-				Name:     name,
-				Settings: settings,
-			}
-		}
-		trimmed := strings.TrimSpace(line)
-		val := strings.Split(strings.ReplaceAll(trimmed, " ", ""), "=")
-		if len(val) > 1 {
-			if val[1] != "" {
-				settings[val[0]] = val[1]
-			}
-		}
+func makeBind(bind string) *Keybind {
+	split := strings.SplitN(bind, "=", 2)
+	keyBind := &Keybind{
+		BindType: strings.TrimSpace(split[0]),
 	}
-	return &Setting{
-		Name:     name,
-		Settings: settings,
+	bind = strings.TrimSpace(split[1])
+
+	// Split "bind" into a slice of strings
+	// based on the comma delimiter
+	keybindSlice := strings.SplitN(bind, ",", 4)
+
+	// if it is just a dispatcher then add blank command
+	if len(keybindSlice) < 4 {
+		keybindSlice = append(keybindSlice, "")
 	}
+
+	// Trim whitespace from keybindSlice[1] to keybindSlice[3]
+	keybindSlice[1] = strings.TrimSpace(keybindSlice[1])
+	keybindSlice[2] = strings.TrimSpace(keybindSlice[2])
+	keybindSlice[3] = strings.TrimSpace(keybindSlice[3])
+
+	keyBind.Dispatcher = keybindSlice[2]
+	keyBind.Command = keybindSlice[3]
+
+	// Check if keybindSlice is empty
+	// Trim the whitespace and "+" if it is
+	if keybindSlice[0] == "" {
+		keybindSlice[1] = strings.TrimSpace(keybindSlice[1])
+		keyBind.Bind = keybindSlice[1]
+	} else {
+		keyBind.Bind = fmt.Sprintf("%s %s", keybindSlice[0], keybindSlice[1])
+	}
+
+	return keyBind
 }
 
 func handler(name string, scanner *bufio.Scanner) *Setting {

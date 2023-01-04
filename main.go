@@ -48,10 +48,10 @@ func main() {
 	if flags.Raw {
 		out := ""
 		for _, bind := range configValues.KeyboardBinds {
-			out += bind + "\n"
+			out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command) + "\n"
 		}
 		for _, bind := range configValues.MouseBinds {
-			out += bind + "\n"
+			out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command) + "\n"
 		}
 		for _, val := range configValues.Settings {
 			out += val.Name + " {" + "\n"
@@ -92,13 +92,13 @@ func main() {
 		}
 	}
 	if flags.Markdown {
-		md := keybindsToMarkdown(configValues.KeyboardBinds, configValues.MouseBinds)
+		// md := keybindsToMarkdown(configValues.KeyboardBinds, configValues.MouseBinds)
 		out := ""
 		out += "| Keybind | Dispatcher | Command |\n"
 		out += "|---------|------------|---------|\n"
-		for _, row := range md {
-			out += row + "\n"
-		}
+		//for _, row := range md {
+		//	out += row + "\n"
+		//}
 		if flags.Output != "" {
 			err := os.WriteFile(flags.Output, []byte(out), 0o644)
 			if err != nil {
