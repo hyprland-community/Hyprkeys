@@ -13,6 +13,7 @@ type Flags struct {
 	Version    bool
 	Variables  bool
 	Blocks     bool
+	Output     string
 	ConfigPath string
 }
 
@@ -25,6 +26,7 @@ func ReadFlags() *Flags {
 	optVersion := getopt.BoolLong("version", 'V', "Show the version number")
 	optVariables := getopt.BoolLong("variables", 'v', "Show variables")
 	optBlocks := getopt.BoolLong("blocks", 'b', "Show blocks")
+	optOutput := getopt.StringLong("output-file", 'o', "", "File path to output file")
 	optPath := getopt.StringLong("config-file", 'f', "", "path to config file, default is $HOME/.config/hypr/hyprland.conf")
 	getopt.Parse()
 	return &Flags{
@@ -37,5 +39,6 @@ func ReadFlags() *Flags {
 		Variables:  *optVariables,
 		Blocks:     *optBlocks,
 		ConfigPath: *optPath,
+		Output:     *optOutput,
 	}
 }

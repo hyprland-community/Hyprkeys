@@ -46,25 +46,34 @@ func main() {
 		return
 	}
 	if flags.Raw {
+		out := ""
 		for _, bind := range configValues.KeyboardBinds {
-			fmt.Println(bind)
+			out += bind + "\n"
 		}
 		for _, bind := range configValues.MouseBinds {
-			fmt.Println(bind)
+			out += bind + "\n"
 		}
 		for _, val := range configValues.Settings {
-			fmt.Println(val.Name, "{")
+			out += val.Name + " {" + "\n"
 			for setting, value := range val.Settings {
-				fmt.Println("\t", setting, "=", value)
+				out += "\t" + setting + " = " + value + "\n"
 			}
 			for _, set := range val.SubCategories {
-				fmt.Println("\t", set.Name, "{")
+				out += "\t" + set.Name + " {\n"
 				for setting, value := range set.Settings {
-					fmt.Println("\t\t", setting, "=", value)
+					out += "\t\t" + setting + " = " + value + "\n"
 				}
-				fmt.Println("\t", "}")
+				out += "\t}\n"
 			}
-			fmt.Println("}")
+			out += "}\n"
+		}
+		fmt.Print(out)
+		if flags.Output != "" {
+			err := os.WriteFile(flags.Output, []byte(out), 0o644)
+			if err != nil {
+				log.Println(err)
+				return
+			}
 		}
 	}
 	if flags.Json {
@@ -74,13 +83,28 @@ func main() {
 			return
 		}
 		fmt.Println(string(out))
+		if flags.Output != "" {
+			err := os.WriteFile(flags.Output, out, 0o644)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+		}
 	}
 	if flags.Markdown {
 		md := keybindsToMarkdown(configValues.KeyboardBinds, configValues.MouseBinds)
-		println("| Keybind | Dispatcher | Command |")
-		println("|---------|------------|---------|")
+		out := ""
+		out += "| Keybind | Dispatcher | Command |\n"
+		out += "|---------|------------|---------|\n"
 		for _, row := range md {
-			println(row)
+			out += row + "\n"
+		}
+		if flags.Output != "" {
+			err := os.WriteFile(flags.Output, []byte(out), 0o644)
+			if err != nil {
+				log.Println(err)
+				return
+			}
 		}
 	}
 }
