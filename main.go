@@ -35,57 +35,44 @@ func main() {
 		flags.ConfigPath = filepath.Join(os.Getenv("HOME"), ".config/hypr/hyprland.conf")
 	}
 
-	configValues, err := reader.ReadHyprlandConfig(flags.ConfigPath)
+	configValues, err := reader.ReadHyprlandConfig(flags)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 
-	if flags.GetBind != "" {
-		getBindHandler(configValues, flags)
-	}
-
-	if flags.Raw {
-		rawHandler(configValues, flags)
-	}
-
-	if flags.Json {
-		jsonHandler(configValues, flags)
-	}
-
-	if flags.Markdown {
-		markdownHandler(configValues, flags)
+	err = outputData(configValues, flags)
+	if err != nil {
+		fmt.Println(err.Error())
 	}
 }
 
-func getBindHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
+func outputData(configValues *reader.ConfigValues, flags *flags.Flags) error {
+	configValues.Binds = filterBinds(configValues, flags)
+	if flags.Markdown {
+		return markdownHandler(configValues, flags)
+	}
+	if flags.Raw {
+		return rawHandler(configValues, flags)
+	}
+	if flags.Json {
+		return jsonHandler(configValues, flags)
+	}
+	return fmt.Errorf("No output flag selected")
+}
+
+func filterBinds(configValues *reader.ConfigValues, flags *flags.Flags) []*reader.Keybind {
 	matchedBinds := make([]*reader.Keybind, 0)
-	for _, val := range configValues.KeyboardBinds {
-		if strings.Contains(val.Dispatcher, flags.GetBind) || strings.Contains(val.Command, flags.GetBind) {
+	for _, val := range configValues.Binds {
+		if strings.Contains(val.Dispatcher, flags.FilterBinds) || strings.Contains(val.Command, flags.FilterBinds) {
 			matchedBinds = append(matchedBinds, val)
 		}
 	}
-	for _, val := range configValues.MouseBinds {
-		if strings.Contains(val.Dispatcher, flags.GetBind) || strings.Contains(val.Command, flags.GetBind) {
-			matchedBinds = append(matchedBinds, val)
-		}
-	}
-	out, err := json.MarshalIndent(matchedBinds, "", " ")
-	if err != nil {
-		return err
-	}
-	fmt.Println(string(out))
-	if flags.Output != "" {
-		err := os.WriteFile(flags.Output, out, 0o644)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return matchedBinds
 }
 
 func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
-	md := keybindsToMarkdown(configValues.KeyboardBinds, configValues.MouseBinds)
+	md := keybindsToMarkdown(configValues.Binds)
 	out := ""
 	out += "| Keybind | Dispatcher | Command | Comments |\n"
 	out += "|---------|------------|---------|----------|\n"
@@ -103,9 +90,18 @@ func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) erro
 }
 
 func jsonHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
-	out, err := json.MarshalIndent(configValues, "", " ")
-	if err != nil {
-		return err
+	var out []byte
+	var err error
+	if !flags.Variables {
+		out, err = json.MarshalIndent(configValues.Binds, "", " ")
+		if err != nil {
+			return err
+		}
+	} else {
+		out, err = json.MarshalIndent(configValues, "", " ")
+		if err != nil {
+			return err
+		}
 	}
 	fmt.Println(string(out))
 	if flags.Output != "" {
@@ -119,25 +115,28 @@ func jsonHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 
 func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 	out := ""
-	for _, bind := range configValues.KeyboardBinds {
-		out += fmt.Sprintf("%s = %s %s %s #%s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command, bind.Comments) + "\n"
-	}
-	for _, bind := range configValues.MouseBinds {
-		out += fmt.Sprintf("%s = %s %s %s #%s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command, bind.Comments) + "\n"
-	}
-	for _, val := range configValues.Settings {
-		out += val.Name + " {" + "\n"
-		for setting, value := range val.Settings {
-			out += "\t" + setting + " = " + value + "\n"
-		}
-		for _, set := range val.SubCategories {
-			out += "\t" + set.Name + " {\n"
-			for setting, value := range set.Settings {
-				out += "\t\t" + setting + " = " + value + "\n"
+	if flags.Variables {
+		for _, val := range configValues.Settings {
+			out += val.Name + " {" + "\n"
+			for setting, value := range val.Settings {
+				out += "\t" + setting + " = " + value + "\n"
 			}
-			out += "\t}\n"
+			for _, set := range val.SubCategories {
+				out += "\t" + set.Name + " {\n"
+				for setting, value := range set.Settings {
+					out += "\t\t" + setting + " = " + value + "\n"
+				}
+				out += "\t}\n"
+			}
+			out += "}\n"
 		}
-		out += "}\n"
+	}
+	for _, bind := range configValues.Binds {
+		out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command)
+		if bind.Comments != "" {
+			out += fmt.Sprintf("#%s", bind.Comments)
+		}
+		out += "\n"
 	}
 	fmt.Print(out)
 	if flags.Output != "" {
@@ -150,13 +149,10 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 }
 
 // Pass both kbKeybinds and mKeybinds to this function
-func keybindsToMarkdown(kbKeybinds, mKeybinds []*reader.Keybind) []string {
+func keybindsToMarkdown(binds []*reader.Keybind) []string {
 	var markdown []string
-	for _, keybind := range kbKeybinds {
+	for _, keybind := range binds {
 		markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+strings.ReplaceAll(keybind.Command, "|", "\\|")+" | "+strings.ReplaceAll(keybind.Comments, "|", "\\|")+" |")
-	}
-	for _, keybind := range mKeybinds {
-		markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+strings.ReplaceAll(keybind.Command, "|", "\\|")+" |")
 	}
 	return markdown
 }

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"notashelf.dev/hyprkeys/flags"
 	// io/ioutil is deprecated, use io and os packages instead
 )
 
@@ -27,13 +29,12 @@ type Keybind struct {
 }
 
 type ConfigValues struct {
-	Settings      Settings
-	KeyboardBinds []*Keybind
-	MouseBinds    []*Keybind
+	Settings Settings
+	Binds    []*Keybind
 }
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
-func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
+func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 	categories := []string{
 		"general",
 		"input",
@@ -52,7 +53,7 @@ func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
 	}
 
 	settings := make(Settings, 0)
-	file, err := os.Open(configPath)
+	file, err := os.Open(flags.ConfigPath)
 	if err != nil {
 		return nil, err
 	}
@@ -60,21 +61,20 @@ func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
 
 	scanner := bufio.NewScanner(file)
 
-	var kbKeybinds []*Keybind
-	var mKeybinds []*Keybind
+	var binds []*Keybind
 	// var variables []string
 
 	for scanner.Scan() {
 		line := scanner.Text()
 		category, isCategory := getCategory(line, categories)
-		if isCategory {
-			settings = append(settings, handler(category, scanner, subcategories))
+		if flags.Variables {
+			if isCategory {
+				settings = append(settings, handler(category, scanner, subcategories))
+			}
 		}
 		switch {
-		case strings.HasPrefix(line, "bindm"):
-			mKeybinds = append(mKeybinds, makeBind(line))
 		case strings.HasPrefix(line, "bind"):
-			kbKeybinds = append(kbKeybinds, makeBind(line))
+			binds = append(binds, makeBind(line))
 		}
 	}
 
@@ -82,9 +82,8 @@ func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
 		panic(err)
 	}
 	configValues := &ConfigValues{
-		Settings:      settings,
-		KeyboardBinds: kbKeybinds,
-		MouseBinds:    mKeybinds,
+		Settings: settings,
+		Binds:    binds,
 	}
 	return configValues, nil
 }
