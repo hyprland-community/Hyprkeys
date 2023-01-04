@@ -1,6 +1,6 @@
 # Sample Markdown
 
-This is an example output for `hyprkeys --markdown`. Syntax is last updated on 21/10/2022.
+This is an example output for `hyprkeys --markdown`. Syntax is last updated on 4/1/2023.
 May be subjected to change.
 
 ## Keys
