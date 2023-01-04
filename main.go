@@ -41,6 +41,10 @@ func main() {
 		return
 	}
 
+	if flags.GetBind != "" {
+		getBindHandler(configValues, flags)
+	}
+
 	if flags.Raw {
 		rawHandler(configValues, flags)
 	}
@@ -52,6 +56,32 @@ func main() {
 	if flags.Markdown {
 		markdownHandler(configValues, flags)
 	}
+}
+
+func getBindHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
+	matchedBinds := make([]*reader.Keybind, 0)
+	for _, val := range configValues.KeyboardBinds {
+		if strings.Contains(val.Dispatcher, flags.GetBind) || strings.Contains(val.Command, flags.GetBind) {
+			matchedBinds = append(matchedBinds, val)
+		}
+	}
+	for _, val := range configValues.MouseBinds {
+		if strings.Contains(val.Dispatcher, flags.GetBind) || strings.Contains(val.Command, flags.GetBind) {
+			matchedBinds = append(matchedBinds, val)
+		}
+	}
+	out, err := json.MarshalIndent(matchedBinds, "", " ")
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(out))
+	if flags.Output != "" {
+		err := os.WriteFile(flags.Output, out, 0o644)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
