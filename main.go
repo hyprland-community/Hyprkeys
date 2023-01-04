@@ -17,7 +17,6 @@ import (
 
 func main() {
 	flags := flags.ReadFlags()
-
 	if flags.Version {
 		version := "unknown"
 		if info, ok := debug.ReadBuildInfo(); ok {
@@ -26,7 +25,6 @@ func main() {
 		fmt.Println("version:", version)
 		return
 	}
-
 	if !(len(os.Args) > 1) || flags.Help {
 		getopt.Usage()
 		return
@@ -44,69 +42,83 @@ func main() {
 		log.Println(err.Error())
 		return
 	}
+
 	if flags.Raw {
-		out := ""
-		for _, bind := range configValues.KeyboardBinds {
-			out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command) + "\n"
-		}
-		for _, bind := range configValues.MouseBinds {
-			out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command) + "\n"
-		}
-		for _, val := range configValues.Settings {
-			out += val.Name + " {" + "\n"
-			for setting, value := range val.Settings {
-				out += "\t" + setting + " = " + value + "\n"
-			}
-			for _, set := range val.SubCategories {
-				out += "\t" + set.Name + " {\n"
-				for setting, value := range set.Settings {
-					out += "\t\t" + setting + " = " + value + "\n"
-				}
-				out += "\t}\n"
-			}
-			out += "}\n"
-		}
-		fmt.Print(out)
-		if flags.Output != "" {
-			err := os.WriteFile(flags.Output, []byte(out), 0o644)
-			if err != nil {
-				log.Println(err)
-				return
-			}
-		}
+		rawHandler(configValues, flags)
 	}
+
 	if flags.Json {
-		out, err := json.MarshalIndent(configValues, "", " ")
-		if err != nil {
-			log.Println(err.Error())
-			return
-		}
-		fmt.Println(string(out))
-		if flags.Output != "" {
-			err := os.WriteFile(flags.Output, out, 0o644)
-			if err != nil {
-				log.Println(err)
-				return
-			}
-		}
+		jsonHandler(configValues, flags)
 	}
+
 	if flags.Markdown {
-		md := keybindsToMarkdown(configValues.KeyboardBinds, configValues.MouseBinds)
-		out := ""
-		out += "| Keybind | Dispatcher | Command |\n"
-		out += "|---------|------------|---------|\n"
-		for _, row := range md {
-			out += row + "\n"
-		}
-		fmt.Println(out)
-		if flags.Output != "" {
-			err := os.WriteFile(flags.Output, []byte(out), 0o644)
-			if err != nil {
-				log.Println(err)
-				return
-			}
+		markdownHandler(configValues, flags)
+	}
+}
+
+func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
+	md := keybindsToMarkdown(configValues.KeyboardBinds, configValues.MouseBinds)
+	out := ""
+	out += "| Keybind | Dispatcher | Command |\n"
+	out += "|---------|------------|---------|\n"
+	for _, row := range md {
+		out += row + "\n"
+	}
+	fmt.Println(out)
+	if flags.Output != "" {
+		err := os.WriteFile(flags.Output, []byte(out), 0o644)
+		if err != nil {
+			return err
 		}
 	}
+	return nil
+}
+
+func jsonHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
+	out, err := json.MarshalIndent(configValues, "", " ")
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(out))
+	if flags.Output != "" {
+		err := os.WriteFile(flags.Output, out, 0o644)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
+	out := ""
+	for _, bind := range configValues.KeyboardBinds {
+		out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command) + "\n"
+	}
+	for _, bind := range configValues.MouseBinds {
+		out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command) + "\n"
+	}
+	for _, val := range configValues.Settings {
+		out += val.Name + " {" + "\n"
+		for setting, value := range val.Settings {
+			out += "\t" + setting + " = " + value + "\n"
+		}
+		for _, set := range val.SubCategories {
+			out += "\t" + set.Name + " {\n"
+			for setting, value := range set.Settings {
+				out += "\t\t" + setting + " = " + value + "\n"
+			}
+			out += "\t}\n"
+		}
+		out += "}\n"
+	}
+	fmt.Print(out)
+	if flags.Output != "" {
+		err := os.WriteFile(flags.Output, []byte(out), 0o644)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // Pass both kbKeybinds and mKeybinds to this function
