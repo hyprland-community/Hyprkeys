@@ -12,12 +12,10 @@ tidy:
 clean:
 	rm -rf bin
 
-install: build inst
-
 uninstall:
 	rm -f /usr/local/bin/${BINARY_NAME}
 
-inst:
+install:
 	cp bin/${BINARY_NAME} /usr/local/bin
 
 
