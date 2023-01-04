@@ -19,8 +19,6 @@ In case you still want to use it, instructions are below:
 3. Install the application with `make build` then `sudo make install`
 5. You can run the application with `hyprland`
 
-**Alternatively, open this directory and run `go run .` to run without compiling or installing.**
-
 ## Project Roadmap
 
 - [x] Format keybinds better, maybe with a proper table
