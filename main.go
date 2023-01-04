@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime/debug"
+	"strings"
 
 	"github.com/pborman/getopt"
 
@@ -59,8 +60,8 @@ func main() {
 func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 	md := keybindsToMarkdown(configValues.KeyboardBinds, configValues.MouseBinds)
 	out := ""
-	out += "| Keybind | Dispatcher | Command |\n"
-	out += "|---------|------------|---------|\n"
+	out += "| Keybind | Dispatcher | Command | Comments |\n"
+	out += "|---------|------------|---------|----------|\n"
 	for _, row := range md {
 		out += row + "\n"
 	}
@@ -92,10 +93,10 @@ func jsonHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 	out := ""
 	for _, bind := range configValues.KeyboardBinds {
-		out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command) + "\n"
+		out += fmt.Sprintf("%s = %s %s %s #%s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command, bind.Comments) + "\n"
 	}
 	for _, bind := range configValues.MouseBinds {
-		out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command) + "\n"
+		out += fmt.Sprintf("%s = %s %s %s #%s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command, bind.Comments) + "\n"
 	}
 	for _, val := range configValues.Settings {
 		out += val.Name + " {" + "\n"
@@ -125,10 +126,10 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 func keybindsToMarkdown(kbKeybinds, mKeybinds []*reader.Keybind) []string {
 	var markdown []string
 	for _, keybind := range kbKeybinds {
-		markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+keybind.Command+" |")
+		markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+strings.ReplaceAll(keybind.Command, "|", "\\|")+" | "+strings.ReplaceAll(keybind.Comments, "|", "\\|")+" |")
 	}
 	for _, keybind := range mKeybinds {
-		markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+keybind.Command+" |")
+		markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+strings.ReplaceAll(keybind.Command, "|", "\\|")+" |")
 	}
 	return markdown
 }

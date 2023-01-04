@@ -115,6 +115,21 @@ func makeBind(bind string) *Keybind {
 		keyBind.Bind = fmt.Sprintf("%s %s", keybindSlice[0], keybindSlice[1])
 	}
 
+	lastString := keybindSlice[3]
+	// comment handler
+	if keybindSlice[3] == "" {
+		lastString = keybindSlice[2]
+	}
+	comments := strings.SplitN(lastString, "#", 2)
+	if len(comments) > 1 {
+		lastString = comments[0]
+		keyBind.Comments = strings.TrimSpace(comments[1])
+	}
+	if keybindSlice[3] == "" {
+		keyBind.Dispatcher = lastString
+	} else {
+		keyBind.Command = lastString
+	}
 	return keyBind
 }
 
