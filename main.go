@@ -28,7 +28,7 @@ func main() {
 		return
 	}
 
-	if flags.Help {
+	if !(len(os.Args) > 1) || flags.Help {
 		getopt.Usage()
 		return
 	}
