@@ -10,4 +10,14 @@ tidy:
 	go mod tidy
 
 clean:
-	rm -r bin
+	rm -rf bin
+
+install: build inst
+
+uninstall:
+	rm -f /usr/local/bin/${BINARY_NAME}
+
+inst:
+	cp bin/${BINARY_NAME} /usr/local/bin
+
+
