@@ -8,6 +8,8 @@ import (
 	// io/ioutil is deprecated, use io and os packages instead
 )
 
+type ConfigCategory string
+
 type Settings []*Setting
 
 type Setting struct {
@@ -32,6 +34,23 @@ type ConfigValues struct {
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
 func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
+	categories := []string{
+		"general",
+		"input",
+		"decoration",
+		"animation",
+		"gestures",
+		"misc",
+		"binds",
+		"debug",
+		"device",
+	}
+
+	subcategories := []string{
+		"touchdevice",
+		"touchpad",
+	}
+
 	settings := make(Settings, 0)
 	file, err := os.Open(configPath)
 	if err != nil {
@@ -47,27 +66,15 @@ func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		category, isCategory := getCategory(line, categories)
+		if isCategory {
+			settings = append(settings, handler(category, scanner, subcategories))
+		}
 		switch {
 		case strings.HasPrefix(line, "bindm"):
 			mKeybinds = append(mKeybinds, makeBind(line))
 		case strings.HasPrefix(line, "bind"):
 			kbKeybinds = append(kbKeybinds, makeBind(line))
-		case strings.HasPrefix(line, "input"):
-			settings = append(settings, handler("input", scanner))
-		case strings.HasPrefix(line, "general"):
-			settings = append(settings, handler("general", scanner))
-		case strings.HasPrefix(line, "decoration"):
-			settings = append(settings, handler("decoration", scanner))
-		case strings.HasPrefix(line, "animations"):
-			settings = append(settings, handler("animations", scanner))
-		case strings.HasPrefix(line, "gestures"):
-			settings = append(settings, handler("gestures", scanner))
-		case strings.HasPrefix(line, "misc"):
-			settings = append(settings, handler("misc", scanner))
-		case strings.HasPrefix(line, "binds"):
-			settings = append(settings, handler("binds", scanner))
-		case strings.HasPrefix(line, "debug"):
-			settings = append(settings, handler("debug", scanner))
 		}
 	}
 
@@ -80,6 +87,24 @@ func ReadHyprlandConfig(configPath string) (*ConfigValues, error) {
 		MouseBinds:    mKeybinds,
 	}
 	return configValues, nil
+}
+
+func getCategory(check string, categories []string) (string, bool) {
+	for _, cat := range categories {
+		if strings.HasPrefix(strings.ToLower(check), cat) {
+			return cat, true
+		}
+	}
+	return "", false
+}
+
+func getSubCategory(check string, categories []string) (string, bool) {
+	for _, cat := range categories {
+		if strings.HasPrefix(strings.ToLower(strings.TrimSpace(check)), cat) {
+			return cat, true
+		}
+	}
+	return "", false
 }
 
 func makeBind(bind string) *Keybind {
@@ -133,10 +158,8 @@ func makeBind(bind string) *Keybind {
 	return keyBind
 }
 
-func handler(name string, scanner *bufio.Scanner) *Setting {
+func handler(name string, scanner *bufio.Scanner, subcategories []string) *Setting {
 	input := make(map[string]string)
-	touchpad := make(map[string]string)
-	touchdevice := make(map[string]string)
 	settings := &Setting{
 		Name: name,
 	}
@@ -146,7 +169,9 @@ func handler(name string, scanner *bufio.Scanner) *Setting {
 			settings.Settings = input
 			return settings
 		}
-		if strings.HasPrefix(strings.TrimSpace(line), "touchpad") {
+		subCategory, isSubCategory := getSubCategory(line, subcategories)
+		if isSubCategory {
+			subSettings := make(map[string]string)
 			for scanner.Scan() {
 				line := scanner.Text()
 				if strings.HasPrefix(strings.TrimSpace(line), "}") {
@@ -156,33 +181,13 @@ func handler(name string, scanner *bufio.Scanner) *Setting {
 				val := strings.Split(strings.ReplaceAll(trimmed, " ", ""), "=")
 				if len(val) > 1 {
 					if val[1] != "" {
-						touchpad[val[0]] = val[1]
+						subSettings[val[0]] = val[1]
 					}
 				}
 			}
 			subcategory := &Setting{
-				Name:     "touchpad",
-				Settings: touchpad,
-			}
-			settings.SubCategories = append(settings.SubCategories, *subcategory)
-		}
-		if strings.HasPrefix(strings.TrimSpace(line), "touchdevice") {
-			for scanner.Scan() {
-				line := scanner.Text()
-				if strings.HasPrefix(strings.TrimSpace(line), "}") {
-					break
-				}
-				trimmed := strings.TrimSpace(line)
-				val := strings.Split(strings.ReplaceAll(trimmed, " ", ""), "=")
-				if len(val) > 1 {
-					if val[1] != "" {
-						touchdevice[val[0]] = val[1]
-					}
-				}
-			}
-			subcategory := &Setting{
-				Name:     "touchdevice",
-				Settings: touchpad,
+				Name:     subCategory,
+				Settings: subSettings,
 			}
 			settings.SubCategories = append(settings.SubCategories, *subcategory)
 		}
