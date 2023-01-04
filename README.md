@@ -16,9 +16,10 @@ In case you still want to use it, instructions are below:
 
 1. Download Go. You can find it [here](https://golang.org/dl/)
 2. Clone this repository with `git clone https://github.com/notashelf/hyprkeys`
-3. Build the application with `go build` and run it with `./hyprkeys`. This will display a list of command line options.
+3. Install the application with `make build` then `sudo make install`
+5. You can run the application with `hyprland`
 
-**Alternatively, open this directory and run `go run .` to run without compiling.**
+**Alternatively, open this directory and run `go run .` to run without compiling or installing.**
 
 ## Project Roadmap
 
