@@ -20,6 +20,11 @@ type Setting struct {
 	SubCategories []Setting
 }
 
+type Keyword struct {
+	Name  string
+	Value string
+}
+
 type Keybind struct {
 	BindType   string
 	Bind       string
@@ -37,6 +42,7 @@ type ConfigValues struct {
 	Settings  Settings   `json:",omitempty"`
 	AutoStart []*Exec    `json:",omitempty"`
 	Binds     []*Keybind `json:",omitempty"`
+	Keywords  []*Keyword `json:",omitempty"`
 }
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
@@ -69,6 +75,7 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 
 	var binds []*Keybind
 	var autostart []*Exec
+	var keywords []*Keyword
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -81,6 +88,8 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 		switch {
 		case strings.HasPrefix(line, "bind"):
 			binds = append(binds, makeBind(line))
+		case strings.HasPrefix(line, "$"):
+			keywords = append(keywords, makeKeyword(line))
 		case strings.HasPrefix(line, "exec"):
 			if flags.AutoStart {
 				autostart = append(autostart, makeExec(line))
@@ -95,6 +104,7 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 		Settings:  settings,
 		Binds:     binds,
 		AutoStart: autostart,
+		Keywords:  keywords,
 	}
 	return configValues, nil
 }
@@ -124,6 +134,15 @@ func makeExec(line string) *Exec {
 		Command:  strings.TrimSpace(split[1]),
 	}
 	return exec
+}
+
+func makeKeyword(line string) *Keyword {
+	split := strings.SplitN(line, "=", 2)
+	keyword := &Keyword{
+		Name:  strings.TrimSpace(strings.TrimPrefix(split[0], "$")),
+		Value: strings.TrimSpace(split[1]),
+	}
+	return keyword
 }
 
 func makeBind(bind string) *Keybind {

@@ -74,6 +74,10 @@ func filterBinds(configValues *reader.ConfigValues, flags *flags.Flags) []*reade
 func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 	md := keybindsToMarkdown(configValues.Binds)
 	out := ""
+	for _, val := range configValues.Keywords {
+		out += fmt.Sprintf("#### $%s = %s", val.Name, val.Value)
+	}
+	out += "\n"
 	out += "| Keybind | Dispatcher | Command | Comments |\n"
 	out += "|---------|------------|---------|----------|\n"
 	for _, row := range md {
@@ -137,6 +141,9 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 			out += fmt.Sprintf("#%s", bind.Comments)
 		}
 		out += "\n"
+	}
+	for _, key := range configValues.Keywords {
+		out += fmt.Sprintf("$%s = %s\n", key.Name, key.Value)
 	}
 	fmt.Print(out)
 	if flags.Output != "" {

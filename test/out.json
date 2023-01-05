@@ -1,67 +1,5 @@
 {
- "Settings": [
-  {
-   "Name": "input",
-   "Settings": {
-    "follow_mouse": "1",
-    "kb_layout": "us",
-    "sensitivity": "0#-1.0-1.0,0meansnomodification."
-   },
-   "SubCategories": [
-    {
-     "Name": "touchpad",
-     "Settings": {
-      "natural_scroll": "no"
-     },
-     "SubCategories": null
-    }
-   ]
-  },
-  {
-   "Name": "general",
-   "Settings": {
-    "border_size": "2",
-    "col.active_border": "rgba(1affffee)",
-    "col.inactive_border": "rgba(595959aa)",
-    "gaps_in": "5",
-    "gaps_out": "20",
-    "layout": "dwindle"
-   },
-   "SubCategories": null
-  },
-  {
-   "Name": "decoration",
-   "Settings": {
-    "blur": "yes",
-    "blur_new_optimizations": "on",
-    "blur_passes": "1",
-    "blur_size": "3",
-    "col.shadow": "rgba(1a1a1aee)",
-    "drop_shadow": "yes",
-    "rounding": "10",
-    "shadow_range": "4",
-    "shadow_render_power": "3"
-   },
-   "SubCategories": null
-  },
-  {
-   "Name": "animation",
-   "Settings": {
-    "animation": "workspaces,1,6,default",
-    "bezier": "myBezier,0.05,0.9,0.1,1.05",
-    "enabled": "yes"
-   },
-   "SubCategories": null
-  },
-  {
-   "Name": "gestures",
-   "Settings": {
-    "workspace_swipe": "off"
-   },
-   "SubCategories": null
-  }
- ],
- "KeyboardBinds": [
+ "Binds": [
   {
    "BindType": "bind",
    "Bind": "$mainMod Q",
@@ -118,6 +56,5 @@
    "Command": "",
    "Comments": "dwindle"
   }
- ],
- "MouseBinds": null
+ ]
 }

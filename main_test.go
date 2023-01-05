@@ -13,7 +13,7 @@ func TestMarkdown(t *testing.T) {
 	flags.ConfigPath = "test/hyprland.conf"
 	flags.Output = "test/markdown.md"
 	flags.Markdown = true
-	configValues, err := reader.ReadHyprlandConfig(flags.ConfigPath)
+	configValues, err := reader.ReadHyprlandConfig(flags)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -28,7 +28,7 @@ func TestJson(t *testing.T) {
 	flags.ConfigPath = "test/hyprland.conf"
 	flags.Output = "test/out.json"
 	flags.Json = true
-	configValues, err := reader.ReadHyprlandConfig(flags.ConfigPath)
+	configValues, err := reader.ReadHyprlandConfig(flags)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -43,7 +43,7 @@ func TestRaw(t *testing.T) {
 	flags.ConfigPath = "test/hyprland.conf"
 	flags.Output = "test/out"
 	flags.Json = true
-	configValues, err := reader.ReadHyprlandConfig(flags.ConfigPath)
+	configValues, err := reader.ReadHyprlandConfig(flags)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
