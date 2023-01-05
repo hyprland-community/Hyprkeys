@@ -114,7 +114,8 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 func getCategory(check string, categories []string) (string, bool) {
 	for _, cat := range categories {
 		if strings.HasPrefix(strings.ToLower(check), cat) {
-			return cat, true
+			categoryName := strings.TrimSpace(strings.TrimSuffix(check, "{"))
+			return categoryName, true
 		}
 	}
 	return "", false
