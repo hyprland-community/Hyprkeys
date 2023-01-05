@@ -28,9 +28,15 @@ type Keybind struct {
 	Comments   string
 }
 
+type Exec struct {
+	ExecType string
+	Command  string
+}
+
 type ConfigValues struct {
-	Settings Settings
-	Binds    []*Keybind
+	Settings  Settings   `json:",omitempty"`
+	AutoStart []*Exec    `json:",omitempty"`
+	Binds     []*Keybind `json:",omitempty"`
 }
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
@@ -62,7 +68,7 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 	scanner := bufio.NewScanner(file)
 
 	var binds []*Keybind
-	// var variables []string
+	var autostart []*Exec
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -75,6 +81,10 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 		switch {
 		case strings.HasPrefix(line, "bind"):
 			binds = append(binds, makeBind(line))
+		case strings.HasPrefix(line, "exec"):
+			if flags.AutoStart {
+				autostart = append(autostart, makeExec(line))
+			}
 		}
 	}
 
@@ -82,8 +92,9 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 		panic(err)
 	}
 	configValues := &ConfigValues{
-		Settings: settings,
-		Binds:    binds,
+		Settings:  settings,
+		Binds:     binds,
+		AutoStart: autostart,
 	}
 	return configValues, nil
 }
@@ -104,6 +115,15 @@ func getSubCategory(check string, categories []string) (string, bool) {
 		}
 	}
 	return "", false
+}
+
+func makeExec(line string) *Exec {
+	split := strings.SplitN(line, "=", 2)
+	exec := &Exec{
+		ExecType: strings.TrimSpace(split[0]),
+		Command:  strings.TrimSpace(split[1]),
+	}
+	return exec
 }
 
 func makeBind(bind string) *Keybind {

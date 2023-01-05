@@ -92,17 +92,12 @@ func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) erro
 func jsonHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 	var out []byte
 	var err error
-	if !flags.Variables {
-		out, err = json.MarshalIndent(configValues.Binds, "", " ")
-		if err != nil {
-			return err
-		}
-	} else {
-		out, err = json.MarshalIndent(configValues, "", " ")
-		if err != nil {
-			return err
-		}
+
+	out, err = json.MarshalIndent(configValues, "", " ")
+	if err != nil {
+		return err
 	}
+
 	fmt.Println(string(out))
 	if flags.Output != "" {
 		err := os.WriteFile(flags.Output, out, 0o644)
@@ -129,6 +124,11 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 				out += "\t}\n"
 			}
 			out += "}\n"
+		}
+	}
+	if flags.AutoStart {
+		for _, val := range configValues.AutoStart {
+			out += fmt.Sprintf("%s=%s\n", val.ExecType, val.Command)
 		}
 	}
 	for _, bind := range configValues.Binds {

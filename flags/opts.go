@@ -11,6 +11,7 @@ type Flags struct {
 	Raw       bool
 	Version   bool
 	Variables bool
+	AutoStart bool
 
 	FilterBinds string
 	Output      string
@@ -23,6 +24,7 @@ func ReadFlags() *Flags {
 
 	optPath := getopt.StringLong("config-file", 'f', "", "path to config file, default is $HOME/.config/hypr/hyprland.conf")
 
+	optAutoStart := getopt.BoolLong("auto-start", 'a', "Show autostarting programs")
 	optVariables := getopt.BoolLong("variables", 'v', "Show variables")
 	optFilterBinds := getopt.StringLong("filter-binds", 'b', "", "get binding where command or dispatcher contains given string use * for all")
 
@@ -42,6 +44,7 @@ func ReadFlags() *Flags {
 		Version:     *optVersion,
 		Variables:   *optVariables,
 		FilterBinds: *optFilterBinds,
+		AutoStart:   *optAutoStart,
 		ConfigPath:  *optPath,
 		Output:      *optOutput,
 	}
