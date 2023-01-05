@@ -89,7 +89,9 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 		case strings.HasPrefix(line, "bind"):
 			binds = append(binds, makeBind(line))
 		case strings.HasPrefix(line, "$"):
-			keywords = append(keywords, makeKeyword(line))
+			if flags.Keywords {
+				keywords = append(keywords, makeKeyword(line))
+			}
 		case strings.HasPrefix(line, "exec"):
 			if flags.AutoStart {
 				autostart = append(autostart, makeExec(line))

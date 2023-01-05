@@ -12,6 +12,7 @@ type Flags struct {
 	Version   bool
 	Variables bool
 	AutoStart bool
+	Keywords  bool
 
 	FilterBinds string
 	Output      string
@@ -26,6 +27,7 @@ func ReadFlags() *Flags {
 
 	optAutoStart := getopt.BoolLong("auto-start", 'a', "Show autostarting programs")
 	optVariables := getopt.BoolLong("variables", 'v', "Show variables")
+	optKeywords := getopt.BoolLong("keywords", 'k', "Show keywords")
 	optFilterBinds := getopt.StringLong("filter-binds", 'b', "", "get binding where command or dispatcher contains given string use * for all")
 
 	optJson := getopt.BoolLong("json", 'j', "Return settigns as json")
@@ -46,6 +48,7 @@ func ReadFlags() *Flags {
 		FilterBinds: *optFilterBinds,
 		AutoStart:   *optAutoStart,
 		ConfigPath:  *optPath,
+		Keywords:    *optKeywords,
 		Output:      *optOutput,
 	}
 }
