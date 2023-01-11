@@ -114,14 +114,19 @@ func filterBinds(configValues *reader.ConfigValues, flags *flags.Flags) []*reade
 }
 
 func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
-	md := keybindsToMarkdown(configValues.Binds)
+	md := keybindsToMarkdown(configValues.Binds, flags)
 	out := ""
 	for _, val := range configValues.Keywords {
 		out += fmt.Sprintf("#### $%s = %s", val.Name, val.Value)
 	}
 	out += "\n"
-	out += "| Keybind | Dispatcher | Command | Comments |\n"
-	out += "|---------|------------|---------|----------|\n"
+	if flags.Comments {
+		out += "| Keybind | Dispatcher | Command | Comments |\n"
+		out += "|---------|------------|---------|----------|\n"
+	} else {
+		out += "| Keybind | Dispatcher | Command |\n"
+		out += "|---------|------------|---------|\n"
+	}
 	for _, row := range md {
 		out += row + "\n"
 	}
@@ -198,8 +203,10 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 	}
 	for _, bind := range configValues.Binds {
 		out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command)
-		if bind.Comments != "" {
-			out += fmt.Sprintf("#%s", bind.Comments)
+		if flags.Comments {
+			if bind.Comments != "" {
+				out += fmt.Sprintf("#%s", bind.Comments)
+			}
 		}
 		out += "\n"
 	}
@@ -217,10 +224,14 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 }
 
 // Pass both kbKeybinds and mKeybinds to this function
-func keybindsToMarkdown(binds []*reader.Keybind) []string {
+func keybindsToMarkdown(binds []*reader.Keybind, flags *flags.Flags) []string {
 	var markdown []string
 	for _, keybind := range binds {
-		markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+strings.ReplaceAll(keybind.Command, "|", "\\|")+" | "+strings.ReplaceAll(keybind.Comments, "|", "\\|")+" |")
+		if flags.Comments {
+			markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+strings.ReplaceAll(keybind.Command, "|", "\\|")+" | "+strings.ReplaceAll(keybind.Comments, "|", "\\|")+" |")
+		} else {
+			markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+strings.ReplaceAll(keybind.Command, "|", "\\|")+" |")
+		}
 	}
 	return markdown
 }

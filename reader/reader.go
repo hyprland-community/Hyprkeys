@@ -87,7 +87,7 @@ func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
 		}
 		switch {
 		case strings.HasPrefix(line, "bind"):
-			binds = append(binds, makeBind(line))
+			binds = append(binds, makeBind(line, flags))
 		case strings.HasPrefix(line, "$"):
 			if flags.Keywords {
 				keywords = append(keywords, makeKeyword(line))
@@ -148,7 +148,7 @@ func makeKeyword(line string) *Keyword {
 	return keyword
 }
 
-func makeBind(bind string) *Keybind {
+func makeBind(bind string, flags *flags.Flags) *Keybind {
 	split := strings.SplitN(bind, "=", 2)
 	keyBind := &Keybind{
 		BindType: strings.TrimSpace(split[0]),
@@ -189,7 +189,9 @@ func makeBind(bind string) *Keybind {
 	comments := strings.SplitN(lastString, "#", 2)
 	if len(comments) > 1 {
 		lastString = comments[0]
-		keyBind.Comments = strings.TrimSpace(comments[1])
+		if flags.Comments {
+			keyBind.Comments = strings.TrimSpace(comments[1])
+		}
 	}
 	if keybindSlice[3] == "" {
 		keyBind.Dispatcher = lastString

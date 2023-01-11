@@ -5,18 +5,18 @@
 | <kbd>SUPER SHIFT V</kbd> | false | false | false | false |  |exec | clipman pick -t rofi | 
 | <kbd>SUPER SHIFT K</kbd> | false | false | false | false |  |exec | rofi -show keybinds -modi keybinds:/home/abs3nt/Scripts/keybinds.sh | 
 | <kbd>SUPER Return</kbd> | false | false | false | false |  |exec | kitty | 
-| <kbd>SUPER BACKSPACE</kbd> | false | false | false | false |  |exec | firefox-nightly | 
+| <kbd>SUPER BACKSPACE</kbd> | false | false | false | false |  |exec | firefox | 
 | <kbd>SUPER H</kbd> | false | false | false | false |  |exec | pcmanfm | 
-| <kbd>SUPER ALT CTRL P</kbd> | false | false | false | false |  |exec | gospt toggleplay && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 'Toggle Play' '$OUTPUT'; done | 
-| <kbd>SUPER ALT CTRL Y</kbd> | false | false | false | false |  |exec | gospt link \| wl-copy && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 'Copied Song Link' '$OUTPUT'; done | 
-| <kbd>SUPER ALT CTRL N</kbd> | false | false | false | false |  |exec | gospt skip && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 'Now Playing' '$OUTPUT'; done | 
-| <kbd>SUPER ALT CTRL H</kbd> | false | false | false | false |  |exec | gospt previous && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 'Now Playing' '$OUTPUT'; done | 
-| <kbd>SUPER ALT CTRL U</kbd> | false | false | false | false |  |exec | gospt unlike && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 'Unliked Song' '$OUTPUT'; done | 
-| <kbd>SUPER ALT CTRL L</kbd> | false | false | false | false |  |exec | gospt like && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 'Liked Song' '$OUTPUT'; done | 
-| <kbd>SUPER ALT CTRL M</kbd> | false | false | false | false |  |exec | gospt radio &&  gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 'Radio Started' '$OUTPUT'; done | 
+| <kbd>SUPER ALT CTRL P</kbd> | false | false | false | false |  |exec | gospt toggleplay && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 "Toggle Play" "$OUTPUT"; done | 
+| <kbd>SUPER ALT CTRL Y</kbd> | false | false | false | false |  |exec | gospt link \| wl-copy && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 "Copied Song Link" "$OUTPUT"; done | 
+| <kbd>SUPER ALT CTRL N</kbd> | false | false | false | false |  |exec | gospt skip && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 "Now Playing" "$OUTPUT"; done | 
+| <kbd>SUPER ALT CTRL H</kbd> | false | false | false | false |  |exec | gospt previous && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 "Now Playing" "$OUTPUT"; done | 
+| <kbd>SUPER ALT CTRL U</kbd> | false | false | false | false |  |exec | gospt unlike && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 "Unliked Song" "$OUTPUT"; done | 
+| <kbd>SUPER ALT CTRL L</kbd> | false | false | false | false |  |exec | gospt like && gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 "Liked Song" "$OUTPUT"; done | 
+| <kbd>SUPER ALT CTRL M</kbd> | false | false | false | false |  |exec | gospt radio &&  gospt nowplaying \| while read OUTPUT; do notify-send -t 4000 "Radio Started" "$OUTPUT"; done | 
 | <kbd>SUPER SHIFT S</kbd> | false | false | false | false |  |exec | slurp -d \| grim -g - - \| wl-copy | 
 | <kbd>SUPER ALT CTRL S</kbd> | false | false | false | false |  |exec | grim -o DP-1 - \| wl-copy | 
-| <kbd>SUPER CTRL SHIFT S</kbd> | false | false | false | false |  |exec | wf-recorder -g '$(slurp)' --audio -f ~/Videos/Screenrecord/record.mp4 | 
+| <kbd>SUPER CTRL SHIFT S</kbd> | false | false | false | false |  |exec | wf-recorder -g "$(slurp)" --audio -f ~/Videos/Screenrecord/record.mp4 | 
 | <kbd>SUPER CTRL SHIFT A</kbd> | false | false | false | false |  |exec | killall -s SIGINT wf-recorder | 
 | <kbd>SUPER SHIFT W</kbd> | false | false | false | false |  |exec | ~/Scripts/set_wallpaper.sh | 
 | <kbd>SUPER ALT L</kbd> | false | false | false | false |  |exec | ~/Scripts/lockscreen.sh | 
