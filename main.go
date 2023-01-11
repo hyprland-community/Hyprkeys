@@ -36,18 +36,45 @@ func main() {
 		flags.ConfigPath = filepath.Join(os.Getenv("HOME"), ".config/hypr/hyprland.conf")
 	}
 
+	binds := ctl.Binds{}
 	if flags.Ctl {
-		binds, err := ctl.BindsFromCtl()
+		var err error
+		binds, err = ctl.BindsFromCtl()
 		if err != nil {
 			panic(err)
 		}
-		out, err := json.MarshalIndent(binds, "", " ")
-		if err != nil {
-			fmt.Println(err)
+		if flags.Json {
+			out, err := json.MarshalIndent(binds, "", " ")
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			fmt.Println(string(out))
+			if flags.Output != "" {
+				err := os.WriteFile(flags.Output, out, 0o644)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+			}
 			return
 		}
-		fmt.Println(string(out))
-		return
+		if flags.Raw {
+			fmt.Println(fmt.Sprintf("%+v", binds))
+			if flags.Output != "" {
+				err := os.WriteFile(flags.Output, []byte(fmt.Sprintf("%+v", binds)), 0o644)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+			}
+			return
+		}
+		if flags.Markdown {
+			ctlToMarkDown(binds, flags)
+			return
+		}
+
 	}
 
 	configValues, err := reader.ReadHyprlandConfig(flags)
@@ -95,6 +122,25 @@ func markdownHandler(configValues *reader.ConfigValues, flags *flags.Flags) erro
 	out += "\n"
 	out += "| Keybind | Dispatcher | Command | Comments |\n"
 	out += "|---------|------------|---------|----------|\n"
+	for _, row := range md {
+		out += row + "\n"
+	}
+	fmt.Println(out)
+	if flags.Output != "" {
+		err := os.WriteFile(flags.Output, []byte(out), 0o644)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func ctlToMarkDown(binds ctl.Binds, flags *flags.Flags) error {
+	md := ctlBindsToMarkdown(binds)
+	out := ""
+	out += "\n"
+	out += "| Keybind | Locked | Mouse | Release | Repeat | Submap | Dispatcher | Command |\n"
+	out += "|---------|--------|-------|---------|--------|--------|------------|---------|\n"
 	for _, row := range md {
 		out += row + "\n"
 	}
@@ -175,6 +221,22 @@ func keybindsToMarkdown(binds []*reader.Keybind) []string {
 	var markdown []string
 	for _, keybind := range binds {
 		markdown = append(markdown, "| <kbd>"+keybind.Bind+"</kbd> | "+keybind.Dispatcher+" | "+strings.ReplaceAll(keybind.Command, "|", "\\|")+" | "+strings.ReplaceAll(keybind.Comments, "|", "\\|")+" |")
+	}
+	return markdown
+}
+
+// Pass both kbKeybinds and mKeybinds to this function
+func ctlBindsToMarkdown(binds ctl.Binds) []string {
+	var markdown []string
+	for _, keybind := range binds {
+		markdown = append(markdown, "| <kbd>"+keybind.Mods+" "+keybind.Key+"</kbd> | "+
+			fmt.Sprintf("%t", keybind.Locked)+" | "+
+			fmt.Sprintf("%t", keybind.Mouse)+" | "+
+			fmt.Sprintf("%t", keybind.Release)+" | "+
+			fmt.Sprintf("%t", keybind.Repeat)+" | "+
+			strings.ReplaceAll(keybind.Submap, "|", "\\|")+" |"+
+			keybind.Dispatcher+" | "+
+			strings.ReplaceAll(keybind.Arg, "|", "\\|")+" | ")
 	}
 	return markdown
 }
