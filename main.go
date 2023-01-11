@@ -12,6 +12,7 @@ import (
 	"github.com/pborman/getopt"
 
 	// io/ioutil is deprecated, use io and os packages instead
+	"notashelf.dev/hyprkeys/ctl"
 	"notashelf.dev/hyprkeys/flags"
 	"notashelf.dev/hyprkeys/reader"
 )
@@ -33,6 +34,20 @@ func main() {
 
 	if flags.ConfigPath == "" {
 		flags.ConfigPath = filepath.Join(os.Getenv("HOME"), ".config/hypr/hyprland.conf")
+	}
+
+	if flags.Ctl {
+		binds, err := ctl.BindsFromCtl()
+		if err != nil {
+			panic(err)
+		}
+		out, err := json.MarshalIndent(binds, "", " ")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(string(out))
+		return
 	}
 
 	configValues, err := reader.ReadHyprlandConfig(flags)
