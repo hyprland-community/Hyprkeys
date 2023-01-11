@@ -2,59 +2,381 @@
  "Binds": [
   {
    "BindType": "bind",
-   "Bind": "$mainMod Q",
+   "Bind": "SUPER D",
+   "Dispatcher": "exec",
+   "Command": "rofi -modi combi -combi-modi drun,window,ssh -show combi",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT V",
+   "Dispatcher": "exec",
+   "Command": "clipman pick -t rofi",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT K",
+   "Dispatcher": "exec",
+   "Command": "rofi -show keybinds -modi keybinds:/home/abs3nt/Scripts/keybinds.sh",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER Return",
    "Dispatcher": "exec",
    "Command": "kitty",
    "Comments": ""
   },
   {
    "BindType": "bind",
-   "Bind": "$mainMod C",
-   "Dispatcher": "killactive",
-   "Command": "",
-   "Comments": ""
-  },
-  {
-   "BindType": "bind",
-   "Bind": "$mainMod M",
-   "Dispatcher": "exit",
-   "Command": "",
-   "Comments": ""
-  },
-  {
-   "BindType": "bind",
-   "Bind": "$mainMod E",
+   "Bind": "SUPER BACKSPACE",
    "Dispatcher": "exec",
-   "Command": "dolphin",
+   "Command": "firefox",
    "Comments": ""
   },
   {
    "BindType": "bind",
-   "Bind": "$mainMod V",
+   "Bind": "SUPER H",
+   "Dispatcher": "exec",
+   "Command": "pcmanfm ",
+   "Comments": "WOOO"
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER CONTROL ALT P",
+   "Dispatcher": "exec",
+   "Command": "gospt toggleplay \u0026\u0026 gospt nowplaying | while read OUTPUT; do notify-send -t 4000 \"Toggle Play\" \"$OUTPUT\"; done",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER CONTROL ALT Y",
+   "Dispatcher": "exec",
+   "Command": "gospt link | wl-copy \u0026\u0026 gospt nowplaying | while read OUTPUT; do notify-send -t 4000 \"Copied Song Link\" \"$OUTPUT\"; done",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER CONTROL ALT N",
+   "Dispatcher": "exec",
+   "Command": "gospt skip \u0026\u0026 gospt nowplaying | while read OUTPUT; do notify-send -t 4000 \"Now Playing\" \"$OUTPUT\"; done",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER CONTROL ALT H",
+   "Dispatcher": "exec",
+   "Command": "gospt previous \u0026\u0026 gospt nowplaying | while read OUTPUT; do notify-send -t 4000 \"Now Playing\" \"$OUTPUT\"; done",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER CONTROL ALT U",
+   "Dispatcher": "exec",
+   "Command": "gospt unlike \u0026\u0026 gospt nowplaying | while read OUTPUT; do notify-send -t 4000 \"Unliked Song\" \"$OUTPUT\"; done",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER CONTROL ALT L",
+   "Dispatcher": "exec",
+   "Command": "gospt like \u0026\u0026 gospt nowplaying | while read OUTPUT; do notify-send -t 4000 \"Liked Song\" \"$OUTPUT\"; done",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER CONTROL ALT M",
+   "Dispatcher": "exec",
+   "Command": "gospt radio \u0026\u0026  gospt nowplaying | while read OUTPUT; do notify-send -t 4000 \"Radio Started\" \"$OUTPUT\"; done",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT S",
+   "Dispatcher": "exec",
+   "Command": "slurp -d | grim -g - - | wl-copy",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER CONTROL ALT S",
+   "Dispatcher": "exec",
+   "Command": "grim -o DP-1 - | wl-copy",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT CONTROL S",
+   "Dispatcher": "exec",
+   "Command": "wf-recorder -g \"$(slurp)\" --audio -f ~/Videos/Screenrecord/record.mp4",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT CONTROL A",
+   "Dispatcher": "exec",
+   "Command": "killall -s SIGINT wf-recorder",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT W",
+   "Dispatcher": "exec",
+   "Command": "~/Scripts/set_wallpaper.sh",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER ALT L",
+   "Dispatcher": "exec",
+   "Command": "~/Scripts/lockscreen.sh",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER V",
    "Dispatcher": "togglefloating",
    "Command": "",
    "Comments": ""
   },
   {
    "BindType": "bind",
-   "Bind": "$mainMod R",
-   "Dispatcher": "exec",
-   "Command": "wofi --show drun",
+   "Bind": "SUPER F",
+   "Dispatcher": "fullscreen",
+   "Command": "",
    "Comments": ""
   },
   {
    "BindType": "bind",
-   "Bind": "$mainMod P",
+   "Bind": "SUPER SHIFT F",
+   "Dispatcher": "fakefullscreen",
+   "Command": "",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER P",
    "Dispatcher": "pseudo",
    "Command": "",
    "Comments": "dwindle"
   },
   {
    "BindType": "bind",
-   "Bind": "$mainMod J",
+   "Bind": "SUPER J",
    "Dispatcher": "togglesplit",
    "Command": "",
    "Comments": "dwindle"
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT Q",
+   "Dispatcher": "killactive",
+   "Command": "",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER left",
+   "Dispatcher": "movefocus",
+   "Command": "l",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER right",
+   "Dispatcher": "movefocus",
+   "Command": "r",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER up",
+   "Dispatcher": "movefocus",
+   "Command": "u",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER down",
+   "Dispatcher": "movefocus",
+   "Command": "d",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 1",
+   "Dispatcher": "workspace",
+   "Command": "1",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 2",
+   "Dispatcher": "workspace",
+   "Command": "2",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 3",
+   "Dispatcher": "workspace",
+   "Command": "3",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 4",
+   "Dispatcher": "workspace",
+   "Command": "4",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 5",
+   "Dispatcher": "workspace",
+   "Command": "5",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 6",
+   "Dispatcher": "workspace",
+   "Command": "6",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 7",
+   "Dispatcher": "workspace",
+   "Command": "7",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 8",
+   "Dispatcher": "workspace",
+   "Command": "8",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 9",
+   "Dispatcher": "workspace",
+   "Command": "9",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER 0",
+   "Dispatcher": "workspace",
+   "Command": "10",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 1",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "1",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 2",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "2",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 3",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "3",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 4",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "4",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 5",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "5",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 6",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "6",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 7",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "7",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 8",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "8",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 9",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "9",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT 0",
+   "Dispatcher": "movetoworkspacesilent",
+   "Command": "10",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER mouse_down",
+   "Dispatcher": "workspace",
+   "Command": "e+1",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER mouse_up",
+   "Dispatcher": "workspace",
+   "Command": "e-1",
+   "Comments": ""
+  },
+  {
+   "BindType": "bindm",
+   "Bind": "SUPER mouse:272",
+   "Dispatcher": "movewindow",
+   "Command": "",
+   "Comments": ""
+  },
+  {
+   "BindType": "bindm",
+   "Bind": "SUPER mouse:273",
+   "Dispatcher": "resizewindow",
+   "Command": "",
+   "Comments": ""
+  },
+  {
+   "BindType": "bind",
+   "Bind": "SUPER SHIFT M",
+   "Dispatcher": "exit",
+   "Command": "",
+   "Comments": ""
   }
  ]
 }

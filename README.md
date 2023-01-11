@@ -59,6 +59,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 If you want to contribute, feel free to open a pull request. I'll try to review it as soon as possible.
 
-## Example Output (as of 20 NOV 2022)
+## Example Outputs (as of 11 JAN 2023)
 
-**Moved to [test/markdown.md](test/markdown.md)**
+**[MARKDOWN](test/out.md)**
+**[JSON](test/out.json)**
+**[RAW](test/out.txt)**
