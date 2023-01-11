@@ -15,6 +15,7 @@ type Flags struct {
 	Keywords  bool
 	Comments  bool
 	Ctl       bool
+	Binds     bool
 
 	FilterBinds string
 	Output      string
@@ -25,14 +26,15 @@ func ReadFlags() *Flags {
 	optHelp := getopt.BoolLong("help", 'h', "Show this help menu")
 	optVersion := getopt.BoolLong("version", 'V', "Show the version number")
 
-	optPath := getopt.StringLong("config-file", 'f', "", "path to config file, default is $HOME/.config/hypr/hyprland.conf")
+	optPath := getopt.StringLong("config-file", 'c', "", "path to config file, default is $HOME/.config/hypr/hyprland.conf")
 
-	optCtl := getopt.BoolLong("from-ctl", 'c', "get binds from ctl")
+	optBinds := getopt.BoolLong("binds", 'b', "output binds")
+	optCtl := getopt.BoolLong("from-ctl", 't', "get binds from ctl")
 	optAutoStart := getopt.BoolLong("auto-start", 'a', "Show autostarting programs")
 	optVariables := getopt.BoolLong("variables", 'v', "Show variables")
 	optKeywords := getopt.BoolLong("keywords", 'k', "Show keywords")
 	optComments := getopt.BoolLong("comments", 'l', "Show comments in output")
-	optFilterBinds := getopt.StringLong("filter-binds", 'b', "", "get binding where command or dispatcher contains given string use * for all")
+	optFilterBinds := getopt.StringLong("filter-binds", 'f', "", "get binding where command or dispatcher contains given string use * for all")
 
 	optJson := getopt.BoolLong("json", 'j', "Return settigns as json")
 	optMarkdown := getopt.BoolLong("markdown", 'm', "Print the binds as a markdown table")
@@ -51,6 +53,7 @@ func ReadFlags() *Flags {
 		Comments:    *optComments,
 		Version:     *optVersion,
 		Variables:   *optVariables,
+		Binds:       *optBinds,
 		FilterBinds: *optFilterBinds,
 		AutoStart:   *optAutoStart,
 		ConfigPath:  *optPath,

@@ -92,7 +92,12 @@ func main() {
 func outputData(configValues *reader.ConfigValues, flags *flags.Flags) error {
 	configValues.Binds = filterBinds(configValues, flags)
 	if flags.Markdown {
-		return markdownHandler(configValues, flags)
+		if flags.Binds {
+			return markdownHandler(configValues, flags)
+		} else {
+			fmt.Println("Markdown is only supported for binds currently")
+			return nil
+		}
 	}
 	if flags.Raw {
 		return rawHandler(configValues, flags)
@@ -201,17 +206,19 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 			out += fmt.Sprintf("%s=%s\n", val.ExecType, val.Command)
 		}
 	}
-	for _, bind := range configValues.Binds {
-		out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command)
-		if flags.Comments {
-			if bind.Comments != "" {
-				out += fmt.Sprintf("#%s", bind.Comments)
+	if flags.Binds {
+		for _, bind := range configValues.Binds {
+			out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command)
+			if flags.Comments {
+				if bind.Comments != "" {
+					out += fmt.Sprintf("#%s", bind.Comments)
+				}
+			}
+			out += "\n"
+			for _, key := range configValues.Keywords {
+				out += fmt.Sprintf("$%s = %s\n", key.Name, key.Value)
 			}
 		}
-		out += "\n"
-	}
-	for _, key := range configValues.Keywords {
-		out += fmt.Sprintf("$%s = %s\n", key.Name, key.Value)
 	}
 	fmt.Print(out)
 	if flags.Output != "" {
