@@ -43,21 +43,11 @@ In case you still want to use it, instructions are below:
 - [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
 - [ ] Packaging for AUR and maybe other distros (why would anyone want that)
 
+https://user-images.githubusercontent.com/86447830/211897915-778e9b24-061d-4d97-bc5e-444224610566.mp4
 
-### Current TODOs
+Rofi script using hyprctl:
 
-- [x] (hyprkeys.go) Trim "bind = " from keybinds before printing in markdown
-- [x] (hyprkeys.go) Switch regex mechanism
-- [x] (hyprkeys.go) `--help flag`
-Search for `TODO` in the code for more information.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
-## Contributing
-
-If you want to contribute, feel free to open a pull request. I'll try to review it as soon as possible.
+![OrCEzxZ - Imgur](https://user-images.githubusercontent.com/86447830/211898056-3bdb2f11-f7f5-4854-871f-4eabaa5b898f.png)
 
 ## Example Outputs (as of 11 JAN 2023)
 
@@ -66,3 +56,11 @@ If you want to contribute, feel free to open a pull request. I'll try to review 
 **[JSON](test/out.json)**
 
 **[RAW](test/out.txt)**
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Contributing
+
+If you want to contribute, feel free to open a pull request. I'll try to review it as soon as possible.
