@@ -62,5 +62,7 @@ If you want to contribute, feel free to open a pull request. I'll try to review 
 ## Example Outputs (as of 11 JAN 2023)
 
 **[MARKDOWN](test/out.md)**
+
 **[JSON](test/out.json)**
+
 **[RAW](test/out.txt)**
