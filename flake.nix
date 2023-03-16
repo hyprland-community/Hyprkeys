@@ -1,5 +1,5 @@
 {
-  description = "Hyprkeys, a keybind inspection utility for Hyprland";
+  description = "Hyprkeys, a config inspection utility for Hyprland";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
