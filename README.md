@@ -41,7 +41,12 @@ In case you still want to use it, instructions are below:
 - [x] Get more than just keybinds, try and get all config options seperated by section
   - [ ] Potentially rename the project
 - [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
-- [ ] Packaging for AUR and maybe other distros (why would anyone want that)
+- [ ] Packaging for various Linux distros
+  - [ ] Nix (WIP)
+    - [ ] Flake
+    - [ ] Legacy nixpkgs package
+  - [ ] Arch (looking for maintainers)
+  - [ ] Fedora (looking for maintainers)
 
 https://user-images.githubusercontent.com/86447830/211897915-778e9b24-061d-4d97-bc5e-444224610566.mp4
 
