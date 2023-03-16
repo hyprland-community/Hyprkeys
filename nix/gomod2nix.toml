@@ -1,0 +1,12 @@
+schema = 3
+
+[mod]
+  [mod."github.com/oleiade/reflections"]
+    version = "v1.0.1"
+    hash = "sha256-KXdvV9qMWUoQGQAtA/+wxySz8H3Ysgs2L6YwoquBfH0="
+  [mod."github.com/pborman/getopt"]
+    version = "v1.1.0"
+    hash = "sha256-hMWyrsk88xecOyTnMrVqwG35TSyVU+G9vmRWpmrI4N4="
+  [mod."github.com/stretchr/testify"]
+    version = "v1.8.1"
+    hash = "sha256-3e0vOJLgCMAan+GfaGN8RGZdarh5iCavM6flf6YMNPk="
