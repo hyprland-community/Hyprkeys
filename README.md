@@ -36,12 +36,13 @@ In case you still want to use it, instructions are below:
   - [x] Account for multiple arguments being passed at once
 - [ ] Somehow account for keybinds can be set dynamically? (I don't know how to do this)
   - [ ] Add instructions for a pipe to `hyprkeys` to get the keybinds from
-- [ ] Convert sway keybinds to Hyprland keybinds with `--convert`
+- [ ] Convert i3/sway keybinds to Hyprland keybinds with `--convert`
   - [ ] Possibly more wayland compositors, sway is enough for now.
 - [x] Get more than just keybinds, try and get all config options seperated by section
-  - [ ] Potentially rename the project
-- [ ] Add a way to change keybinds with Hyprkeys after reading them (???)
-- [ ] Packaging for various Linux distros
+  - [x] Config sections
+  - [x] Autostarted applications
+  - [x] Keywords from inside `hyprland.conf`
+- [ ] **Packaging for various Linux distros**
   - [ ] Nix (WIP)
     - [ ] Flake
     - [ ] Legacy nixpkgs package
