@@ -1,7 +1,15 @@
-BINARY_NAME=hyprkeys
+pkgname := hyprkeys
+build: ${pkgname}
 
-build:
-	GOARCH=amd64 GOOS=linux go build -o bin/${BINARY_NAME} main.go
+${pkgname}: $(shell find . -name '*.go')
+	mkdir -p bin
+	go build -o bin/${pkgname} .
+
+completions:
+	mkdir -p completions
+	./bin/${pkgname} completion zsh > completions/_${pkgname}
+	./bin/${pkgname} completion bash > completions/${pkgname}
+	./bin/${pkgname} completion fish > completions/${pkgname}.fish
 
 run:
 	go run main.go
@@ -11,11 +19,16 @@ tidy:
 
 clean:
 	rm -rf bin
+	rm -rf completions
 
 uninstall:
-	rm -f /usr/local/bin/${BINARY_NAME}
+	rm -f /usr/local/bin/${pkgname}
+	rm -f /usr/share/zsh/site-functions/_${pkgname}
+	rm -f /usr/share/bash-completion/completions/${pkgname}
+	rm -f /usr/share/fish/vendor_completions.d/${pkgname}.fish
 
 install:
-	cp bin/${BINARY_NAME} /usr/local/bin
-
-
+	cp bin/${pkgname} /usr/local/bin
+	bin/${pkgname} completion zsh > /usr/share/zsh/site-functions/_${pkgname}
+	bin/${pkgname} completion bash > /usr/share/bash-completion/completions/${pkgname}
+	bin/${pkgname} completion fish > /usr/share/fish/vendor_completions.d/${pkgname}.fish
