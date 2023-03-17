@@ -2,10 +2,7 @@ module notashelf.dev/hyprkeys
 
 go 1.19
 
-require (
-	github.com/pborman/getopt v1.1.0
-	github.com/spf13/cobra v1.6.1
-)
+require github.com/spf13/cobra v1.6.1
 
 require (
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
