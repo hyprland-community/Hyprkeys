@@ -27,7 +27,7 @@ func main() {
 		fmt.Println("version:", version)
 		return
 	}
-	if !(len(os.Args) > 1) || flags.Help {
+	if flags.Help || len(os.Args) == 0 {
 		getopt.Usage()
 		return
 	}
@@ -60,7 +60,7 @@ func main() {
 			return
 		}
 		if flags.Raw {
-			fmt.Println(fmt.Sprintf("%+v", binds))
+			fmt.Printf("%+v\n", binds)
 			if flags.Output != "" {
 				err := os.WriteFile(flags.Output, []byte(fmt.Sprintf("%+v", binds)), 0o644)
 				if err != nil {
@@ -105,7 +105,7 @@ func outputData(configValues *reader.ConfigValues, flags *flags.Flags) error {
 	if flags.Json {
 		return jsonHandler(configValues, flags)
 	}
-	return fmt.Errorf("No output flag selected")
+	return fmt.Errorf("no output flag selected")
 }
 
 func filterBinds(configValues *reader.ConfigValues, flags *flags.Flags) []*reader.Keybind {
@@ -206,6 +206,11 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 			out += fmt.Sprintf("%s=%s\n", val.ExecType, val.Command)
 		}
 	}
+	if flags.Keywords {
+		for _, key := range configValues.Keywords {
+			out += fmt.Sprintf("$%s = %s\n", key.Name, key.Value)
+		}
+	}
 	if flags.Binds {
 		for _, bind := range configValues.Binds {
 			out += fmt.Sprintf("%s = %s %s %s", bind.BindType, bind.Bind, bind.Dispatcher, bind.Command)
@@ -215,9 +220,6 @@ func rawHandler(configValues *reader.ConfigValues, flags *flags.Flags) error {
 				}
 			}
 			out += "\n"
-			for _, key := range configValues.Keywords {
-				out += fmt.Sprintf("$%s = %s\n", key.Name, key.Value)
-			}
 		}
 	}
 	fmt.Print(out)
