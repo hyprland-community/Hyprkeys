@@ -11,10 +11,6 @@ import (
 	"notashelf.dev/hyprkeys/src/reader"
 )
 
-func main() {
-	fmt.Println("vim-go")
-}
-
 func OutputConfig(configValues *reader.ConfigValues, conf config.Flags) error {
 	configValues.Binds = filterBinds(configValues, conf)
 	if conf.Raw {

@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -18,18 +17,18 @@ var conf config.Flags
 var rootCmd = &cobra.Command{
 	Use:   "hyprkeys",
 	Short: "A simple, scriptable keybind retrieval utility for Hyprand",
-	Run:   run,
+	RunE:  run,
 }
 
 func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
 
 func init() {
-	rootCmd.Flags().BoolVarP(&conf.Json, "json", "j", true, "Output in json")
+	rootCmd.Flags().BoolVarP(&conf.Json, "json", "j", false, "Output in json")
 	rootCmd.Flags().BoolVarP(&conf.Markdown, "markdown", "m", false, "Output in markdown")
 	rootCmd.Flags().BoolVarP(&conf.Raw, "raw", "r", false, "Output in plain text")
 	rootCmd.MarkFlagsMutuallyExclusive("json", "markdown", "raw")
@@ -47,7 +46,7 @@ func init() {
 	rootCmd.Flags().StringP("filter-binds", "f", "", "get binding where command or dispatcher contains given string")
 }
 
-func run(cmd *cobra.Command, args []string) {
+func run(cmd *cobra.Command, args []string) error {
 	if conf.ConfigPath == "" {
 		confDir, err := os.UserConfigDir()
 		if err != nil {
@@ -63,17 +62,20 @@ func run(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(err)
 		}
-		writer.OutputCtl(binds, conf)
+		err = writer.OutputCtl(binds, conf)
+		if err != nil {
+			return err
+		}
 	}
 
 	configValues, err := reader.ReadHyprlandConfig(conf)
 	if err != nil {
-		log.Println(err.Error())
-		return
+		return err
 	}
 
 	err = writer.OutputConfig(configValues, conf)
 	if err != nil {
-		fmt.Println(err.Error())
+		return err
 	}
+	return nil
 }
