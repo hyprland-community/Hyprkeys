@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"notashelf.dev/hyprkeys/flags"
+	"notashelf.dev/hyprkeys/src/config"
 	// io/ioutil is deprecated, use io and os packages instead
 )
 
@@ -46,7 +46,7 @@ type ConfigValues struct {
 }
 
 // Read Hyprland configuration file and return lines that start with bind= and bindm=
-func ReadHyprlandConfig(flags *flags.Flags) (*ConfigValues, error) {
+func ReadHyprlandConfig(flags config.Flags) (*ConfigValues, error) {
 	categories := []string{
 		"general",
 		"input",
@@ -150,7 +150,7 @@ func makeKeyword(line string) *Keyword {
 	return keyword
 }
 
-func makeBind(bind string, flags *flags.Flags) *Keybind {
+func makeBind(bind string, flags config.Flags) *Keybind {
 	split := strings.SplitN(bind, "=", 2)
 	keyBind := &Keybind{
 		BindType: strings.TrimSpace(split[0]),
