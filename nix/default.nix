@@ -10,6 +10,7 @@
         ];
       }
   ),
+  lib,
 }:
 pkgs.buildGoApplication {
   pname = "Hyprkeys";
@@ -17,4 +18,6 @@ pkgs.buildGoApplication {
   pwd = ../.;
   src = ../.;
   modules = ./gomod2nix.toml;
+
+  meta = with lib; {mainProgram = "hyprkeys";};
 }
