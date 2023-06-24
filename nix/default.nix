@@ -19,5 +19,11 @@ pkgs.buildGoApplication {
   src = ../.;
   modules = ./gomod2nix.toml;
 
-  meta = with lib; {mainProgram = "hyprkeys";};
+  meta = with lib; {
+    mainProgram = "hyprkeys";
+    license = licenses.mit;
+    description = "A simple, scriptable keybind retrieval utility for Hyprland";
+    homepage = "https://github.com/hyprland-community/${pname}";
+    changelog = "https://github.com/hyprland-community/${pname}/releases/tag/v${version}";
+  };
 }
