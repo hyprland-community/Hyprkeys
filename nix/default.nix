@@ -10,11 +10,20 @@
         ];
       }
   ),
+  lib,
 }:
 pkgs.buildGoApplication {
   pname = "Hyprkeys";
-  version = "1.0.0";
+  version = "1.0.1";
   pwd = ../.;
   src = ../.;
   modules = ./gomod2nix.toml;
+
+  meta = with lib; {
+    mainProgram = "hyprkeys";
+    license = licenses.mit;
+    description = "A simple, scriptable keybind retrieval utility for Hyprland";
+    homepage = "https://github.com/hyprland-community/${pname}";
+    changelog = "https://github.com/hyprland-community/${pname}/releases/tag/v${version}";
+  };
 }

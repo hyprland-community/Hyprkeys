@@ -14,10 +14,16 @@ In case you still want to use it, instructions are below:
 
 ## Installation & Usage
 
+### From source
+
 1. Download Go. You can find it [here](https://golang.org/dl/)
-2. Clone this repository with `git clone https://github.com/notashelf/hyprkeys`
+2. Clone this repository with `git clone https://github.com/hyprland-community/hyprkeys`
 3. Install the application with `make build` then `sudo make install`
-5. You can run the application with `hyprland`
+4. You can run the application with `hyprkeys`
+
+### Using nix
+
+`nix run github:hyprland-community/Hyprkeys`
 
 ## Project Roadmap
 
