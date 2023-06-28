@@ -86,7 +86,7 @@ func ReadHyprlandConfig(flags config.Flags) (*ConfigValues, error) {
 			}
 		}
 		switch {
-		case strings.HasPrefix(line, "bind"):
+		case strings.HasPrefix(line, "bind") && !strings.HasPrefix(line, "binds"):
 			if flags.Binds {
 				binds = append(binds, makeBind(line, flags))
 			}
