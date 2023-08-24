@@ -43,7 +43,7 @@ func init() {
 	rootCmd.Flags().BoolVarP(&conf.Keywords, "keywords", "k", false, "Show keywords")
 	rootCmd.Flags().BoolVarP(&conf.Comments, "comments", "l", false, "Show comments in output")
 
-	rootCmd.Flags().StringP("filter-binds", "f", "", "get binding where command or dispatcher contains given string")
+	rootCmd.Flags().StringVarP(&conf.FilterBinds,"filter-binds", "f", "", "Filter binds where command or dispatcher contains given string")
 }
 
 func run(cmd *cobra.Command, args []string) error {
