@@ -2,19 +2,22 @@
   buildGoModule,
   nix-filter,
   lib,
+  installShellFiles,
   ...
 }:
-buildGoModule {
+buildGoModule rec {
   pname = "Hyprkeys";
   version = "1.0.2";
   src = nix-filter.lib {
     root = ./.;
-    exclude = [
-      ./README.md
-      ./out.md
-      ./out.json
-      ./.github
-    ];
+    exclude =
+      [
+        ./README.md
+        ./out.md
+        ./out.json
+        ./.github
+      ]
+      ++ lib.optional (!doCheck) [./test];
   };
 
   ldflags = ["-s" "-w"];
@@ -22,11 +25,13 @@ buildGoModule {
 
   doCheck = true;
 
+  nativeBuildInputs = [installShellFiles];
+
   preFixup = ''
     mkdir -p completions
-    $out/bin/hyprkeys completions zsh > completions/hyprkeys.zsh
-    $out/bin/hyprkeys completions bash > completions/hyprkeys.bash
-    $out/bin/hyprkeys completions fish > completions/hyprkeys.fish
+    $out/bin/hyprkeys completion zsh > completions/_hyprkeys
+    $out/bin/hyprkeys completion bash > completions/hyprkeys.bash
+    $out/bin/hyprkeys completion fish > completions/hyprkeys.fish
 
     installShellCompletion completions/*
   '';
