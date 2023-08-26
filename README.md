@@ -13,7 +13,7 @@ A simple, fast and scriptable keybind inspection utility for [Hyprland](https://
 
 ### Using the Nix Flake
 
-```
+```nix
 # flake.nix
 {
   inputs = {
@@ -71,8 +71,5 @@ This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE) fil
 
 ## Contributing
 
-If you want to contribute, feel free to open a pull request. I'll try to review it as soon as possible.
-
-```
-
-```
+Contributions, in form of Pull Requests and Issues are always welcome. If you wish to make changes, open a pull request and I will
+guide you through it.
