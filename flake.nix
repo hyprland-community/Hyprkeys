@@ -1,25 +1,32 @@
 {
-  description = "Hyprkeys, a config inspection utility for Hyprland";
-
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.gomod2nix.url = "github:nix-community/gomod2nix";
+  description = "Hyprkeys - a keybind inspection utility for Hyprland";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs";
+    nix-filter.url = "github:numtide/nix-filter";
+  };
 
   outputs = {
     self,
     nixpkgs,
-    flake-utils,
-    gomod2nix,
-  }: (
-    flake-utils.lib.eachDefaultSystem
-    (system: let
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [gomod2nix.overlays.default];
+    nix-filter,
+  }: let
+    systems = ["x86_64-linux" "aarch64-linux"]; # we assume Hyprland only works on those two, for now
+    forEachSystem = nixpkgs.lib.genAttrs systems;
+
+    pkgsForEach = nixpkgs.legacyPackages;
+  in {
+    packages = forEachSystem (system: rec {
+      hyprkeys = pkgsForEach.${system}.callPackage ./default.nix {inherit nix-filter;};
+      default = hyprkeys;
+    });
+
+    devShells = forEachSystem (system: {
+      default = pkgsForEach.${system}.mkShell {
+        name = "hyprkeys-dev";
+        packages = with pkgsForEach.${system}; [go];
       };
-    in {
-      packages.default = pkgs.callPackage ./nix {};
-      devShells.default = import ./nix/shell.nix {inherit pkgs;};
-    })
-  );
+    });
+
+    formatter = forEachSystem (system: nixpkgs.legacyPackages.${system}.alejandra);
+  };
 }
