@@ -7,7 +7,7 @@
 }:
 buildGoModule rec {
   pname = "Hyprkeys";
-  version = "1.0.2";
+  version = "1.0.3";
   src = nix-filter.lib {
     root = ./.;
     exclude =

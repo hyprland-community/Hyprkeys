@@ -19,3 +19,7 @@ hyprkeys
 # VScode settings
 .vscode/
 
+# nix artifacts
+result/
+result
+

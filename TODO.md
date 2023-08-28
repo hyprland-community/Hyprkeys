@@ -14,7 +14,7 @@
   - [ ] Sort output by dispatcher
   - [x] Account for multiple arguments being passed at once
 - [ ] Somehow account for keybinds can be set dynamically? (I don't know how to do this)
-  - [ ] Add instructions for a pipe to `hyprkeys` to get the keybinds from
+  - [ ] Add instructions for a pipe to `hyprkeys` to get the keybinds from (user must put binds into a pipe file like xob or wob)
 - [ ] Convert i3/sway keybinds to Hyprland keybinds with `--convert`
   - [ ] Possibly more wayland compositors, sway is enough for now.
 - [x] Get more than just keybinds, try and get all config options seperated by section
