@@ -20,7 +20,7 @@ buildGoModule rec {
       ++ lib.optional (!doCheck) [./test];
   };
 
-  ldflags = ["-s" "-w"];
+  ldflags = ["-s" "-w" "-X main.version=v${version}"];
   vendorHash = "sha256-JFvC9V0xS8SZSdLsOtpyTrFzXjYAOaPQaJHdcnJzK3s=";
 
   doCheck = true;

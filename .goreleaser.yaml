@@ -10,7 +10,8 @@ builds:
       - windows
       - darwin
     ldflags:
-      - -s -w -X notashelf.dev/hyprkeys/cmd.Version={{.Version}}
+      - -s -w
+      - -X main.version={{.Version}}
 
 archives:
   - format: tar.gz
@@ -22,8 +23,8 @@ archives:
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
     format_overrides:
-    - goos: windows
-      format: zip
+      - goos: windows
+        format: zip
     rlcp: true
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"

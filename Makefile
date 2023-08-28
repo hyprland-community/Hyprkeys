@@ -1,9 +1,11 @@
 pkgname := hyprkeys
+version := v1.0.2
+
 build: ${pkgname}
 
 ${pkgname}: $(shell find . -name '*.go')
 	mkdir -p bin
-	go build -o bin/${pkgname} .
+	go build -o bin/${pkgname} -ldflags "-X 'main.version=${version}'" .
 
 completions:
 	mkdir -p completions
