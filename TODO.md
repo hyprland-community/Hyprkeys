@@ -25,5 +25,5 @@
   - [ ] Nix (WIP)
     - [x] Flake
     - [ ] Legacy nixpkgs package
-  - [ ] Arch (looking for maintainers)
+  - [x] Arch [AUR Package](https://aur.archlinux.org/packages/hyprkeys)
   - [ ] Fedora (looking for maintainers)
