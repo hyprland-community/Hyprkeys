@@ -36,6 +36,15 @@ A simple, fast and scriptable keybind inspection utility for [Hyprland](https://
   };
 }
 ```
+### Arch AUR Package
+
+Arch User Repository [package](https://aur.archlinux.org/packages/hyprkeys) is maintained by [bloominstrong](https://github.com/bloominstrong)
+```
+git clone https://aur.archlinux.org/hyprkeys.git
+cd hyprkeys
+# Get needed dependencies, make and install hyprkeys
+makepkg -si
+```
 
 ### Installing Prebuild Binaries
 
