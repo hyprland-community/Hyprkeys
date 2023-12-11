@@ -29,7 +29,7 @@ A simple, fast and scriptable keybind inspection utility for [Hyprland](https://
     nixosConfigurations.yourHostName = nixpkgs.lib.nixosSystem {
       # ...
 
-      system.packages = [ hyprkeys.packages.${system}.hyprkeys ];
+      environment.systemPackages = [ hyprkeys.packages.${system}.hyprkeys ];
 
       # ...
     };
@@ -72,7 +72,7 @@ https://user-images.githubusercontent.com/86447830/211897915-778e9b24-061d-4d97-
 
 ## Project Roadmap
 
-See [TODO](todo.md).
+See [TODO](TODO.md).
 
 ## License
 
@@ -80,5 +80,5 @@ This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE) fil
 
 ## Contributing
 
-Contributions, in form of Pull Requests and Issues are always welcome. If you wish to make changes, open a pull request and I will
+Contributions, in form of **Pull Requests** and **Issues**, are always welcome. If you wish to make changes, open a pull request and I will
 guide you through it.
