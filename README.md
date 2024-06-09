@@ -1,13 +1,16 @@
 # ⌨️ Hyprkeys
 
-A simple, fast and scriptable keybind inspection utility for [Hyprland](https://github.com/hyprwm/Hyprland)
+A simple, fast and scriptable keybind inspection utility for
+[Hyprland](https://github.com/hyprwm/Hyprland)
 
 ## Installation & Usage
 
 ### From source
 
-1. Download Go. You can obtain it from your distro's package manager. It is named "go" under most distros.
-2. Clone this repository with `git clone https://github.com/hyprland-community/hyprkeys`
+1. Download Go. You can obtain it from your distro's package manager. It is
+   named "go" under most distros.
+2. Clone this repository with
+   `git clone https://github.com/hyprland-community/hyprkeys`
 3. Install the application with `make build` then `sudo make install`
 4. You can run the application with `hyprkeys`
 
@@ -36,9 +39,12 @@ A simple, fast and scriptable keybind inspection utility for [Hyprland](https://
   };
 }
 ```
+
 ### Arch AUR Package
 
-Arch User Repository [package](https://aur.archlinux.org/packages/hyprkeys) is maintained by [bloominstrong](https://github.com/bloominstrong)
+Arch User Repository [package](https://aur.archlinux.org/packages/hyprkeys) is
+maintained by [bloominstrong](https://github.com/bloominstrong)
+
 ```
 git clone https://aur.archlinux.org/hyprkeys.git
 cd hyprkeys
@@ -48,7 +54,8 @@ makepkg -si
 
 ### Installing Prebuild Binaries
 
-Prebuilt binaries are distributed for each tagged release. You may find them under [releases](https://github.com/hyprland-community/Hyprkeys/releases)
+Prebuilt binaries are distributed for each tagged release. You may find them
+under [releases](https://github.com/hyprland-community/Hyprkeys/releases)
 
 ## Usage
 
@@ -76,9 +83,11 @@ See [TODO](TODO.md).
 
 ## License
 
-This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE)
+file for more details.
 
 ## Contributing
 
-Contributions, in form of **Pull Requests** and **Issues**, are always welcome. If you wish to make changes, open a pull request and I will
-guide you through it.
+Contributions, in form of **Pull Requests** and **Issues**, are always welcome.
+If you wish to make changes, open a pull request and I will guide you through
+it.
