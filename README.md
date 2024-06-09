@@ -3,6 +3,16 @@
 A simple, fast and scriptable keybind inspection utility for
 [Hyprland](https://github.com/hyprwm/Hyprland)
 
+<!-- deno-fmt-ignore-start -->
+
+> [!WARNING]
+> Hyprkeys has been **deprecated** as of June 2024. This has to do with the fact
+> that it was unmaintained for a while now, and that I am no longer interested
+> in maintaining the project. This repository will not go anywhere, and we are
+> still taking contributions but **do not expect updates**.
+
+<!-- deno-fmt-ignore-end -->
+
 ## Installation & Usage
 
 ### From source
