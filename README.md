@@ -8,8 +8,9 @@ A simple, fast and scriptable keybind inspection utility for
 > [!WARNING]
 > Hyprkeys has been **deprecated** as of June 2024. This has to do with the fact
 > that it was unmaintained for a while now, and that I am no longer interested
-> in maintaining the project. This repository will not go anywhere, and we are
-> still taking contributions but **do not expect updates**.
+> in maintaining the project. This repository will not go anywhere, however we
+> will no longer be taking contributions as Hyprkeys' functionaity is **now built
+> into Hyprland**! Thank you for your continued support.
 
 <!-- deno-fmt-ignore-end -->
 
